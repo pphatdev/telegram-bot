@@ -23,7 +23,9 @@ export function ChatSidebar({ mobileView, setMobileView }: ChatSidebarProps) {
 
   const filteredChats = MOCK_CHATS.filter((chat) => {
     const matchesTab = activeTab === 'All' || chat.type === activeTab;
-    const matchesSearch = chat.name.toLowerCase().includes(searchQuery.toLowerCase());
+    const matchesSearch = 
+      chat.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
+      chat.message.toLowerCase().includes(searchQuery.toLowerCase());
     return matchesTab && matchesSearch;
   });
 
