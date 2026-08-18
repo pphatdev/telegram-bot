@@ -114,7 +114,7 @@ const EMOJIS = [
   { char: '😾', name: 'pouting cat face' },
 ];
 
-const STICKERS = [
+const STICKERS: { src?: string; name: string; char?: string }[] = [
   { src: "/stickers/pphat/0.webm", name: "pphat 😡 mad angry" },
   { src: "/stickers/pphat/1.webm", name: "pphat 😟 sad" },
   { src: "/stickers/pphat/2.webm", name: "pphat 😘 kiss love" },
@@ -214,7 +214,7 @@ export function ChatInput({
           rows={1} 
           placeholder="Write a message..." 
           aria-label="Write a message" 
-          className="max-h-32 min-h-10 flex-1 resize-none bg-transparent py-2 text-sm outline-none placeholder:text-muted-foreground [field-sizing:content] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+          className="max-h-32 min-h-10 flex-1 resize-none bg-transparent py-2 text-sm outline-none placeholder:text-muted-foreground field-sizing-content scrollbar-none [&::-webkit-scrollbar]:hidden"
           onKeyDown={(e) => {
             if (e.key === 'Escape') {
               setReplyTo(null);
@@ -278,7 +278,7 @@ export function ChatInput({
                 <div className="grid grid-cols-2 gap-2">
                   {filteredGifs.map((gif) => (
                     <button key={gif.id} className="aspect-video bg-accent/40 rounded-lg hover:bg-accent transition-colors flex items-center justify-center relative overflow-hidden group">
-                      <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/20 to-purple-500/20" />
+                      <div className="absolute inset-0 bg-linear-to-br from-indigo-500/20 to-purple-500/20" />
                       <PlaySquare className="w-8 h-8 text-foreground/30 group-hover:text-foreground/60 transition-colors z-10" />
                       <span className="absolute bottom-1 left-2 text-[10px] font-bold text-foreground/50 z-10">{gif.name}</span>
                     </button>
