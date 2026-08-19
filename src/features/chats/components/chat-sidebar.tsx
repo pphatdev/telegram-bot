@@ -75,7 +75,7 @@ export function ChatSidebar({ mobileView, setMobileView, activeChatId, setActive
   const filteredChats = chats
     .filter(chat => {
       const matchesTab = activeTab === 'All' || chat.type === activeTab;
-      const matchesSearch = chat.name.toLowerCase().includes(searchQuery.toLowerCase());
+      const matchesSearch = chat.name.toLowerCase().includes(searchQuery.toLowerCase()) || chat.message.toLowerCase().includes(searchQuery.toLowerCase());
       return matchesTab && matchesSearch;
     })
     .sort((a, b) => (b.pinned ? 1 : 0) - (a.pinned ? 1 : 0));

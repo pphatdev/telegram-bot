@@ -11,6 +11,8 @@ export default function ChatPage() {
   const [mobileView, setMobileView] = useState<'sidebar' | 'chat'>('sidebar');
   const [activeChatId, setActiveChatId] = useState<number | null>(null);
   const [showProfile, setShowProfile] = useState(false);
+  const [innerSearchQuery, setInnerSearchQuery] = useState('');
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [replyTo, setReplyTo] = useState<{ author: string; text: string } | null>(null);
   const [activeEmojiTab, setActiveEmojiTab] = useState<'emoji' | 'sticker' | 'gif'>('emoji');
   const inputRef = useRef<HTMLTextAreaElement>(null);
@@ -60,8 +62,14 @@ export default function ChatPage() {
               closeChat={() => {
                 setActiveChatId(null);
                 setMobileView('sidebar');
+                setIsSearchOpen(false);
+                setInnerSearchQuery('');
               }}
               onProfileClick={() => setShowProfile(!showProfile)}
+              innerSearchQuery={innerSearchQuery}
+              setInnerSearchQuery={setInnerSearchQuery}
+              isSearchOpen={isSearchOpen}
+              setIsSearchOpen={setIsSearchOpen}
             />
         
         <div className="mx-auto flex w-full max-w-4xl flex-1 flex-col overflow-hidden px-3 sm:px-8">
@@ -70,41 +78,25 @@ export default function ChatPage() {
               Today, August 18
             </div>
             
-            <ChatMessage 
-              author="Quang Le"
-              authorInitials="QL"
-              authorColorClass="bg-sky-500"
-              text="Good morning! Ready to shape the next chapter of our launch?"
-              time="10:12"
-              onReply={handleReply}
-            />
-            
-            <ChatMessage 
-              align="end"
-              text="I have the latest timeline and notes ready. What should we work on first?"
-              time="10:13"
-              onReply={handleReply}
-              isOwnMessage
-            />
-            
-            <ChatMessage 
-              author="Michael Chen"
-              authorInitials="MC"
-              authorColorClass="bg-emerald-500"
-              text="Let’s lock the onboarding flow first. The new draft feels much clearer."
-              time="10:16"
-              onReply={handleReply}
-              reactions={[{ emoji: "👍", count: 2 }]}
-            />
-            
-            <ChatMessage 
-              align="end"
-              text="Perfect. I’ll review the screens and share a final checklist before lunch."
-              time="10:18"
-              onReply={handleReply}
-              isOwnMessage
-              reactions={[{ emoji: "❤️" }]}
-            />
+            {[
+              { id: 1, author: "Quang Le", authorInitials: "QL", authorColorClass: "bg-sky-500", text: "Good morning! Ready to shape the next chapter of our launch?", time: "10:12" },
+              { id: 2, align: "end", text: "I have the latest timeline and notes ready. What should we work on first?", time: "10:13", isOwnMessage: true },
+              { id: 3, author: "Michael Chen", authorInitials: "MC", authorColorClass: "bg-emerald-500", text: "Let’s lock the onboarding flow first. The new draft feels much clearer.", time: "10:16", reactions: [{ emoji: "👍", count: 2 }] },
+              { id: 4, align: "end", text: "Perfect. I’ll review the screens and share a final checklist before lunch.", time: "10:18", isOwnMessage: true, reactions: [{ emoji: "❤️" }] }
+            ].filter(msg => msg.text.toLowerCase().includes(innerSearchQuery.toLowerCase())).map((msg) => (
+              <ChatMessage 
+                key={msg.id}
+                author={msg.author}
+                authorInitials={msg.authorInitials}
+                authorColorClass={msg.authorColorClass}
+                text={msg.text}
+                time={msg.time}
+                align={msg.align as any}
+                isOwnMessage={msg.isOwnMessage}
+                reactions={msg.reactions}
+                onReply={handleReply}
+              />
+            ))}
           </div>
           
           <ChatInput 
