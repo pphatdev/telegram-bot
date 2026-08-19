@@ -6,7 +6,7 @@ interface ChatProfileProps {
 
 export function ChatProfile({ onClose }: ChatProfileProps) {
   return (
-    <aside className="flex w-full h-full md:w-[400px] md:h-[85vh] lg:w-[350px] lg:h-full md:rounded-3xl lg:rounded-none shrink-0 flex-col overflow-hidden bg-background md:border lg:border-y-0 lg:border-r-0 lg:border-l border-border animate-in slide-in-from-bottom-8 md:zoom-in-95 lg:zoom-in-100 lg:slide-in-from-right-8 duration-300 md:shadow-2xl lg:shadow-none">
+    <aside className="flex w-full h-full md:w-100 md:h-[85vh] lg:w-87.5 lg:h-full md:rounded-3xl lg:rounded-none shrink-0 flex-col overflow-hidden bg-background md:border lg:border-y-0 lg:border-r-0 lg:border-l border-border animate-in slide-in-from-bottom-8 md:zoom-in-95 lg:zoom-in-100 lg:slide-in-from-right-8 duration-300 md:shadow-2xl lg:shadow-none">
       <header className="flex h-17 items-center justify-between border-b border-border bg-card px-4 shadow-sm">
         <h2 className="text-[16px] font-semibold">User Info</h2>
         <button onClick={onClose} aria-label="Close profile" className="rounded-full p-2 text-muted-foreground hover:bg-accent">

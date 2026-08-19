@@ -63,7 +63,7 @@ export default function ChatPage() {
       />
 
       {activeChatId === null ? (
-        <section className={`glass min-w-[375px] flex-1 flex-col overflow-hidden bg-chat-pattern ${mobileView === 'chat' ? 'flex animate-in fade-in slide-in-from-right-8 lg:animate-none duration-300' : 'hidden lg:flex'}`}>
+        <section className={`glass min-w-93.75 flex-1 flex-col overflow-hidden bg-chat-pattern ${mobileView === 'chat' ? 'flex animate-in fade-in slide-in-from-right-8 lg:animate-none duration-300' : 'hidden lg:flex'}`}>
           <div className="flex flex-1 items-center justify-center">
             <div className="bg-card/40 backdrop-blur-md rounded-full px-6 py-2 text-[14px] font-medium text-foreground shadow-sm border border-white/5">
               Select a chat to start messaging
@@ -72,7 +72,7 @@ export default function ChatPage() {
         </section>
       ) : (
         <>
-          <section className={`glass min-w-[375px] flex-1 flex-col overflow-hidden bg-chat-pattern ${mobileView === 'chat' && !showProfile ? 'flex animate-in fade-in slide-in-from-right-8 lg:animate-none duration-300' : 'hidden lg:flex'}`}>
+          <section className={`glass min-w-93.75 flex-1 flex-col overflow-hidden bg-chat-pattern ${mobileView === 'chat' && !showProfile ? 'flex animate-in fade-in slide-in-from-right-8 lg:animate-none duration-300' : 'hidden lg:flex'}`}>
             <ChatHeader 
               setMobileView={setMobileView} 
               closeChat={() => {
@@ -88,7 +88,7 @@ export default function ChatPage() {
               setIsSearchOpen={setIsSearchOpen}
             />
         
-        <div className="mx-auto flex w-full max-w-4xl min-w-[375px] flex-1 flex-col overflow-hidden px-3 sm:px-8">
+        <div className="mx-auto flex w-full max-w-4xl min-w-93.75 flex-1 flex-col overflow-hidden px-3 sm:px-8">
           <div className="flex-1 overflow-y-auto py-6">
             <div className="mx-auto mb-5 w-fit rounded-full bg-card/90 px-3 py-1 text-xs text-muted-foreground shadow-sm">
               Today, August 18

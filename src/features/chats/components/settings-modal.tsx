@@ -89,7 +89,7 @@ export function SettingsModal({
   if (!showSettings) return null;
 
   return (
-    <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/50 backdrop-blur-md animate-in fade-in duration-200" onClick={() => { setShowSettings(false); setViewHistory(['main']); setDirection('forward'); }}>
+    <div className="fixed inset-0 z-100 flex items-center justify-center bg-black/50 backdrop-blur-md animate-in fade-in duration-200" onClick={() => { setShowSettings(false); setViewHistory(['main']); setDirection('forward'); }}>
       <div className="w-full h-full sm:w-[90%] max-w-none sm:max-w-md sm:h-auto rounded-none sm:rounded-[32px] bg-background/95 sm:bg-background/85 backdrop-blur-3xl p-6 sm:shadow-2xl border-0 sm:border border-white/10 animate-in slide-in-from-right-8 sm:slide-in-from-right-0 sm:zoom-in-95 duration-300 overflow-y-auto" onClick={(e) => { e.stopPropagation(); setIsFontDropdownOpen(false); }}>
         <div key={activeSettingsView} className={`w-full ${direction === 'forward' && activeSettingsView !== 'main' ? 'animate-in fade-in slide-in-from-right-8 duration-300' : ''} ${direction === 'backward' ? 'animate-in fade-in slide-in-from-left-8 duration-300' : ''}`}>
         {activeSettingsView === 'main' ? (
@@ -103,10 +103,10 @@ export function SettingsModal({
             
             <div className="flex flex-col items-center justify-center mb-6">
               <div className="relative mb-3">
-                <div className="grid size-[90px] place-items-center rounded-full bg-blue-500 text-[32px] font-bold text-white shadow-xl">
+                <div className="grid size-22.5 place-items-center rounded-full bg-blue-500 text-[32px] font-bold text-white shadow-xl">
                   MB
                 </div>
-                <div className="absolute bottom-1 right-1 size-[22px] rounded-full bg-green-500 border-[3.5px] border-background">
+                <div className="absolute bottom-1 right-1 size-5.5 rounded-full bg-green-500 border-[3.5px] border-background">
                 </div>
               </div>
               <h3 className="text-[22px] font-bold text-foreground tracking-tight">{botName}</h3>
@@ -188,14 +188,14 @@ export function SettingsModal({
             <div className="space-y-6">
               <div className="flex justify-center mb-2 animate-in zoom-in-95 duration-300">
                 <div className="relative group cursor-pointer">
-                  <div className="grid size-[110px] place-items-center rounded-full bg-blue-500 text-[40px] font-bold text-white shadow-xl transition-transform group-active:scale-95">
+                  <div className="grid size-27.5 place-items-center rounded-full bg-blue-500 text-[40px] font-bold text-white shadow-xl transition-transform group-active:scale-95">
                     MB
                   </div>
                   <div className="absolute inset-0 rounded-full bg-black/40 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity">
                     <Camera className="w-9 h-9 text-white" />
                   </div>
-                  <div className="absolute bottom-0 right-1 grid size-[34px] place-items-center rounded-full bg-primary text-primary-foreground border-[3.5px] border-background shadow-sm">
-                    <Camera className="w-[18px] h-[18px]" />
+                  <div className="absolute bottom-0 right-1 grid size-8.5 place-items-center rounded-full bg-primary text-primary-foreground border-[3.5px] border-background shadow-sm">
+                    <Camera className="w-4.5 h-4.5" />
                   </div>
                 </div>
               </div>
@@ -209,7 +209,7 @@ export function SettingsModal({
                   <div className="text-[13px] font-semibold text-primary mb-1">Username</div>
                   <div className="flex items-center justify-between">
                     <span className="text-[15px] text-foreground">@KfeSecurityBot</span>
-                    <button className="text-primary hover:opacity-80 transition-opacity p-1 rounded-md hover:bg-primary/10"><Copy className="w-[18px] h-[18px]" /></button>
+                    <button className="text-primary hover:opacity-80 transition-opacity p-1 rounded-md hover:bg-primary/10"><Copy className="w-4.5 h-4.5" /></button>
                   </div>
                   <p className="text-[13px] text-muted-foreground mt-2 leading-relaxed">This is your bot's public handle. Users can interact with your bot by searching for this username on Telegram.</p>
                 </div>
@@ -338,14 +338,14 @@ export function SettingsModal({
                             {item.startsWith('@') ? item.charAt(1).toUpperCase() : item.charAt(0).toUpperCase()}
                           </div>
                           <div className="flex items-center gap-2">
-                            <div className="text-[15px] font-medium text-foreground truncate max-w-[200px]">{item}</div>
+                            <div className="text-[15px] font-medium text-foreground truncate max-w-50">{item}</div>
                             {accessListTab === 'keywords' && item.startsWith('/') && (
                               <span className="bg-orange-500/10 text-orange-500 border border-orange-500/20 text-[10px] font-bold px-2 py-0.5 rounded-[6px]">REGEX</span>
                             )}
                           </div>
                         </div>
                         <button onClick={() => handleRemoveUser(item)} className="text-muted-foreground hover:text-destructive transition-colors p-2 hover:bg-destructive/10 rounded-full">
-                          <Trash2 className="w-[18px] h-[18px]" />
+                          <Trash2 className="w-4.5 h-4.5" />
                         </button>
                       </div>
                     ))
@@ -469,7 +469,7 @@ export function SettingsModal({
                         const steps = [65, 70, 75, 80, 85, 90, 95, 100, 110, 120];
                         handleScaleChange(steps[Number(e.target.value)]);
                       }}
-                      className="flex-1 h-2 bg-black/10 dark:bg-white/10 rounded-full appearance-none cursor-pointer outline-none [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-[28px] [&::-webkit-slider-thumb]:h-[28px] [&::-webkit-slider-thumb]:bg-white [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:shadow-[0_2px_8px_rgba(0,0,0,0.3)] [&::-webkit-slider-thumb]:border [&::-webkit-slider-thumb]:border-gray-300/30 transition-all"
+                      className="flex-1 h-2 bg-black/10 dark:bg-white/10 rounded-full appearance-none cursor-pointer outline-none [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-7 [&::-webkit-slider-thumb]:h-7 [&::-webkit-slider-thumb]:bg-white [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:shadow-[0_2px_8px_rgba(0,0,0,0.3)] [&::-webkit-slider-thumb]:border [&::-webkit-slider-thumb]:border-gray-300/30 transition-all"
                     />
                     <span className="text-lg font-bold text-muted-foreground">A</span>
                   </div>
@@ -511,11 +511,11 @@ export function SettingsModal({
                 </div>
                 {isPasscodeOn && (
                   <div className="animate-in slide-in-from-top-2 fade-in duration-200">
-                    <div className="h-[1px] w-full bg-border/50" />
+                    <div className="h-px w-full bg-border/50" />
                     <button className="flex w-full items-center justify-between px-4 py-3.5 text-left hover:bg-accent/50 transition-colors">
                       <div className="text-[15px] font-medium text-primary">Change Passcode</div>
                     </button>
-                    <div className="h-[1px] w-full bg-border/50" />
+                    <div className="h-px w-full bg-border/50" />
                     <button className="flex w-full items-center justify-between px-4 py-3.5 text-left hover:bg-accent/50 transition-colors">
                       <div className="text-[15px] font-medium text-foreground">Auto-Lock</div>
                       <div className="flex items-center gap-1 text-muted-foreground">
@@ -523,7 +523,7 @@ export function SettingsModal({
                         <ChevronRight className="w-5 h-5 opacity-50" />
                       </div>
                     </button>
-                    <div className="h-[1px] w-full bg-border/50" />
+                    <div className="h-px w-full bg-border/50" />
                     <div className="flex w-full items-center justify-between px-4 py-3.5">
                       <div className="text-[15px] font-medium text-foreground">Unlock with Biometrics</div>
                       <button 

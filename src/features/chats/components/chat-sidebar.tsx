@@ -110,25 +110,25 @@ export function ChatSidebar({ mobileView, setMobileView, activeChatId, setActive
 
   return (
     <aside 
-      className={`relative shrink-0 w-full lg:w-[var(--sidebar-width)] flex-col overflow-hidden lg:rounded-r-none rounded-[16px] border-white/50 bg-sidebar shadow-xl ${mobileView === 'sidebar' ? 'flex animate-in fade-in slide-in-from-left-8 lg:animate-none duration-300' : 'hidden lg:flex'}`}
+      className={`relative shrink-0 w-full lg:w-(--sidebar-width) flex-col overflow-hidden lg:rounded-r-none rounded-[16px] border-white/50 bg-sidebar shadow-xl ${mobileView === 'sidebar' ? 'flex animate-in fade-in slide-in-from-left-8 lg:animate-none duration-300' : 'hidden lg:flex'}`}
       style={{ '--sidebar-width': `${sidebarWidth}px` } as React.CSSProperties}
     >
       <div 
-        className="hidden lg:block absolute top-0 bottom-0 right-0 w-1 cursor-col-resize hover:bg-primary/50 active:bg-primary transition-colors z-[60]"
+        className="hidden lg:block absolute top-0 bottom-0 right-0 w-1 cursor-col-resize hover:bg-primary/50 active:bg-primary transition-colors z-60"
         onMouseDown={(e) => { e.preventDefault(); setIsResizing(true); }}
       />
       <div className="flex flex-col gap-4 px-4 pt-5 pb-2 border-b border-border/50 bg-background/50 backdrop-blur-xl sticky top-0 z-10">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
             <button onClick={() => setShowSettings(true)} aria-label="Menu" className="grid size-9 place-items-center rounded-full bg-accent hover:bg-accent/80 active:scale-95 transition-all lg:hidden">
-              <Menu className="w-[18px] h-[18px] text-foreground" />
+              <Menu className="w-4.5 h-4.5 text-foreground" />
             </button>
             <h1 className="text-[26px] font-bold tracking-tight text-foreground lg:block hidden">Chats</h1>
             <h1 className="text-[26px] font-bold tracking-tight text-foreground lg:hidden">Chats</h1>
           </div>
           <div className="flex items-center gap-2">
             <button aria-label="New message" className="grid size-9 place-items-center rounded-full bg-blue-500 text-white shadow-sm hover:bg-blue-600 active:scale-95 transition-all">
-              <Pencil className="w-[18px] h-[18px] translate-x-[1px] -translate-y-[1px]" />
+              <Pencil className="w-4.5 h-4.5 translate-x-px -translate-y-px" />
             </button>
           </div>
         </div>
@@ -218,7 +218,7 @@ export function ChatSidebar({ mobileView, setMobileView, activeChatId, setActive
 
       {contextMenu && (
         <div 
-          className="fixed z-[100] w-56 bg-card/95 backdrop-blur-md border border-white/10 rounded-xl shadow-2xl py-1 overflow-hidden animate-in fade-in zoom-in-95 duration-150"
+          className="fixed z-100 w-56 bg-card/95 backdrop-blur-md border border-white/10 rounded-xl shadow-2xl py-1 overflow-hidden animate-in fade-in zoom-in-95 duration-150"
           style={{ top: contextMenu.y, left: contextMenu.x }}
           onClick={(e) => e.stopPropagation()}
         >
