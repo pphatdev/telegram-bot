@@ -1,4 +1,4 @@
-import { Shield, X, User, Bell, Palette, ArrowLeft, Sun, Moon, Monitor, Check, Type, ChevronDown, ChevronRight, Bot, Lock, LogOut, Plus } from "lucide-react";
+import { Shield, X, User, Bell, Palette, ArrowLeft, Sun, Moon, Monitor, Check, Type, ChevronDown, ChevronRight, Bot, Lock, LogOut, Plus, Smartphone, KeyRound, ShieldCheck } from "lucide-react";
 import { useState, useEffect } from "react";
 
 interface SettingsModalProps {
@@ -22,7 +22,7 @@ export function SettingsModal({
   scale,
   handleScaleChange
 }: SettingsModalProps) {
-  const [activeSettingsView, setActiveSettingsView] = useState<'main' | 'appearance' | 'passcode' | 'switch-bot'>('main');
+  const [activeSettingsView, setActiveSettingsView] = useState<'main' | 'appearance' | 'passcode' | 'switch-bot' | 'security'>('main');
   const [isPasscodeOn, setIsPasscodeOn] = useState(false);
   const [useBiometrics, setUseBiometrics] = useState(false);
   const [isFontDropdownOpen, setIsFontDropdownOpen] = useState(false);
@@ -66,7 +66,7 @@ export function SettingsModal({
                 </div>
                 <ChevronRight className="w-5 h-5 text-muted-foreground/50" />
               </button>
-              <button className="flex w-full items-center gap-4 px-4 py-3.5 text-left hover:bg-accent/50 transition-colors border-b border-border/50">
+              <button onClick={() => setActiveSettingsView('security')} className="flex w-full items-center gap-4 px-4 py-3.5 text-left hover:bg-accent/50 transition-colors border-b border-border/50">
                 <div className="bg-emerald-500 p-1.5 rounded-[10px] text-white shadow-sm"><Shield className="w-5 h-5" /></div>
                 <div className="flex-1">
                   <div className="text-[17px] font-medium text-foreground">Privacy & Security</div>
@@ -333,6 +333,60 @@ export function SettingsModal({
               </div>
               <p className="text-[13px] text-muted-foreground px-4 text-center animate-in fade-in duration-300">
                 You can manage multiple bot accounts and seamlessly switch between them to manage broadcasts and settings.
+              </p>
+            </div>
+          </>
+        ) : activeSettingsView === 'security' ? (
+          <>
+            <div className="relative flex items-center justify-center mb-8 h-8">
+              <button onClick={() => setActiveSettingsView('main')} className="absolute left-0 flex items-center gap-1 text-primary hover:opacity-80 transition-opacity">
+                <ArrowLeft className="w-6 h-6 -ml-1" />
+                <span className="text-[17px]">Settings</span>
+              </button>
+              <h2 className="text-[17px] font-semibold tracking-tight">Privacy & Security</h2>
+            </div>
+            
+            <div className="space-y-6 animate-in fade-in slide-in-from-right-8 duration-300">
+              <div className="bg-card/60 backdrop-blur-xl rounded-[24px] overflow-hidden border border-white/5 shadow-sm">
+                <button className="flex w-full items-center gap-4 px-4 py-3.5 text-left hover:bg-accent/50 transition-colors border-b border-border/50">
+                  <div className="bg-indigo-500 p-1.5 rounded-[10px] text-white shadow-sm"><KeyRound className="w-5 h-5" /></div>
+                  <div className="flex-1">
+                    <div className="text-[17px] font-medium text-foreground">Two-Step Verification</div>
+                  </div>
+                  <div className="text-[15px] text-muted-foreground mr-1">Off</div>
+                  <ChevronRight className="w-5 h-5 text-muted-foreground/50" />
+                </button>
+                <button className="flex w-full items-center gap-4 px-4 py-3.5 text-left hover:bg-accent/50 transition-colors border-b border-border/50">
+                  <div className="bg-sky-500 p-1.5 rounded-[10px] text-white shadow-sm"><Smartphone className="w-5 h-5" /></div>
+                  <div className="flex-1">
+                    <div className="text-[17px] font-medium text-foreground">Active Sessions</div>
+                  </div>
+                  <div className="text-[15px] text-muted-foreground mr-1">2 devices</div>
+                  <ChevronRight className="w-5 h-5 text-muted-foreground/50" />
+                </button>
+                <button onClick={() => setActiveSettingsView('passcode')} className="flex w-full items-center gap-4 px-4 py-3.5 text-left hover:bg-accent/50 transition-colors">
+                  <div className="bg-slate-700 dark:bg-slate-400 p-1.5 rounded-[10px] text-white shadow-sm"><Lock className="w-5 h-5" /></div>
+                  <div className="flex-1">
+                    <div className="text-[17px] font-medium text-foreground">Passcode Lock</div>
+                  </div>
+                  <div className="text-[15px] text-muted-foreground mr-1">{isPasscodeOn ? 'On' : 'Off'}</div>
+                  <ChevronRight className="w-5 h-5 text-muted-foreground/50" />
+                </button>
+              </div>
+
+              <div className="bg-card/60 backdrop-blur-xl rounded-[24px] overflow-hidden border border-white/5 shadow-sm mt-4">
+                <button className="flex w-full items-center gap-4 px-4 py-3.5 text-left hover:bg-accent/50 transition-colors">
+                  <div className="bg-rose-500 p-1.5 rounded-[10px] text-white shadow-sm"><ShieldCheck className="w-5 h-5" /></div>
+                  <div className="flex-1">
+                    <div className="text-[17px] font-medium text-foreground">Webhook Security</div>
+                  </div>
+                  <div className="text-[15px] text-muted-foreground mr-1">Active</div>
+                  <ChevronRight className="w-5 h-5 text-muted-foreground/50" />
+                </button>
+              </div>
+              
+              <p className="text-[13px] text-muted-foreground px-4 text-center animate-in fade-in duration-300">
+                Manage your active sessions, set up two-step verification, and configure bot webhook secrets to protect against unauthorized access.
               </p>
             </div>
           </>
