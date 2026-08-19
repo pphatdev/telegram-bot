@@ -7,6 +7,8 @@ import { SettingsModal } from "./settings-modal";
 interface ChatSidebarProps {
   mobileView: 'sidebar' | 'chat';
   setMobileView: (view: 'sidebar' | 'chat') => void;
+  activeChatId: number | null;
+  setActiveChatId: (id: number) => void;
 }
 
 type ChatType = 'All' | 'Personal' | 'Group' | 'Channel';
@@ -18,7 +20,7 @@ const MOCK_CHATS = [
   { id: 4, name: 'Design review', type: 'Channel', time: 'Friday', message: 'Alex sent an image', avatarText: 'DR', avatarColor: 'bg-violet-500' },
 ];
 
-export function ChatSidebar({ mobileView, setMobileView }: ChatSidebarProps) {
+export function ChatSidebar({ mobileView, setMobileView, activeChatId, setActiveChatId }: ChatSidebarProps) {
   const [activeTab, setActiveTab] = useState<ChatType>('All');
   const [searchQuery, setSearchQuery] = useState('');
   const [showSettings, setShowSettings] = useState(false);
@@ -120,8 +122,11 @@ export function ChatSidebar({ mobileView, setMobileView }: ChatSidebarProps) {
         {filteredChats.map((chat) => (
           <button
             key={chat.id}
-            onClick={() => setMobileView('chat')}
-            className={`flex w-full items-center gap-3 px-4 py-2.5 text-left transition hover:bg-accent/60 ${chat.active ? 'bg-accent' : ''}`}
+            onClick={() => {
+              setActiveChatId(chat.id);
+              setMobileView('chat');
+            }}
+            className={`flex w-full items-center gap-3 px-4 py-2.5 text-left transition hover:bg-accent/60 ${activeChatId === chat.id ? 'bg-accent' : ''}`}
           >
             <span className={`grid size-12 shrink-0 place-items-center rounded-full text-sm font-semibold text-white ${chat.avatarColor}`}>
               {chat.avatarText}
