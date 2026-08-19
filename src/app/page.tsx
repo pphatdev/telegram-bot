@@ -62,7 +62,14 @@ export default function ChatPage() {
   }, [sidebarWidth, showProfile]);
   
   return (
-    <main className="flex h-screen bg-background p-1">
+    <main className="flex h-screen bg-background lg:p-2 relative overflow-hidden">
+      {/* Ambient Spatial Gradients */}
+      <div className="absolute inset-0 bg-chat-pattern opacity-40 mix-blend-overlay pointer-events-none" />
+      <div className="absolute top-[-20%] left-[-10%] w-[50%] h-[50%] bg-primary/20 rounded-full blur-[120px] pointer-events-none animate-pulse duration-10000" />
+      <div className="absolute bottom-[-20%] right-[-10%] w-[50%] h-[50%] bg-teal-500/20 rounded-full blur-[120px] pointer-events-none animate-pulse duration-7000 delay-1000" />
+      <div className="absolute top-[30%] left-[40%] w-[30%] h-[30%] bg-blue-500/10 rounded-full blur-[100px] pointer-events-none animate-pulse duration-5000" />
+
+      <div className="relative z-10 flex h-full w-full gap-2">
       {isLocked && (
         <PasscodeLock 
           onUnlock={() => setIsLocked(false)} 
@@ -80,16 +87,16 @@ export default function ChatPage() {
       />
 
       {activeChatId === null ? (
-        <section className={`glass min-w-93.75 flex-1 flex-col overflow-hidden bg-chat-pattern ${mobileView === 'chat' ? 'flex animate-in fade-in slide-in-from-right-8 lg:animate-none duration-300' : 'hidden lg:flex'}`}>
-          <div className="flex flex-1 items-center justify-center">
-            <div className="bg-card/40 backdrop-blur-md rounded-full px-6 py-2 text-[14px] font-medium text-foreground shadow-sm border border-white/5">
+        <section className={`bg-background/40 backdrop-blur-3xl rounded-[32px] shadow-[0_30px_60px_rgba(0,0,0,0.12),0_0_0_1px_rgba(255,255,255,0.1)_inset,0_2px_12px_rgba(255,255,255,0.2)_inset] min-w-93.75 flex-1 flex-col overflow-hidden relative ${mobileView === 'chat' ? 'flex animate-in fade-in slide-in-from-right-8 lg:animate-none duration-300' : 'hidden lg:flex'}`}>
+          <div className="flex flex-1 items-center justify-center relative z-10">
+            <div className="bg-black/5 dark:bg-white/5 backdrop-blur-md rounded-full px-6 py-2 text-[14px] font-medium text-foreground shadow-[0_2px_10px_rgba(0,0,0,0.02)_inset] border border-white/10">
               Select a chat to start messaging
             </div>
           </div>
         </section>
       ) : (
         <>
-          <section className={`glass min-w-93.75 flex-1 flex-col overflow-hidden bg-chat-pattern ${mobileView === 'chat' && !showProfile ? 'flex animate-in fade-in slide-in-from-right-8 lg:animate-none duration-300' : 'hidden lg:flex'}`}>
+          <section className={`bg-background/40 backdrop-blur-3xl rounded-[32px] shadow-[0_30px_60px_rgba(0,0,0,0.12),0_0_0_1px_rgba(255,255,255,0.1)_inset,0_2px_12px_rgba(255,255,255,0.2)_inset] min-w-93.75 flex-1 flex-col overflow-hidden relative ${mobileView === 'chat' && !showProfile ? 'flex animate-in fade-in slide-in-from-right-8 lg:animate-none duration-300' : 'hidden lg:flex'}`}>
             <ChatHeader 
               setMobileView={setMobileView} 
               closeChat={() => {
@@ -149,6 +156,7 @@ export default function ChatPage() {
           )}
         </>
       )}
+      </div>
     </main>
   );
 }

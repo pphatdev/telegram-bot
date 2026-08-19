@@ -33,7 +33,9 @@ const bubbleVariants = cva(
         ghost:
           "border-none *:data-[slot=bubble-content]:rounded-none *:data-[slot=bubble-content]:bg-transparent *:data-[slot=bubble-content]:p-0 [&>[data-slot=bubble-content]:is(button,a):hover]:bg-muted [&>[data-slot=bubble-content]:is(button,a):hover]:text-foreground dark:[&>[data-slot=bubble-content]:is(button,a):hover]:bg-muted/50",
         glass:
-          "*:data-[slot=bubble-content]:bg-card/80 *:data-[slot=bubble-content]:backdrop-blur-xl *:data-[slot=bubble-content]:text-foreground *:data-[slot=bubble-content]:shadow-sm [&>[data-slot=bubble-content]:is(button,a):hover]:bg-card/60",
+          "*:data-[slot=bubble-content]:bg-background/60 *:data-[slot=bubble-content]:backdrop-blur-3xl *:data-[slot=bubble-content]:text-foreground *:data-[slot=bubble-content]:shadow-[0_4px_16px_rgba(0,0,0,0.1),0_1px_2px_rgba(255,255,255,0.1)_inset] *:data-[slot=bubble-content]:border *:data-[slot=bubble-content]:border-black/5 dark:*:data-[slot=bubble-content]:border-white/10 [&>[data-slot=bubble-content]:is(button,a):hover]:bg-background/40",
+        "glass-primary":
+          "*:data-[slot=bubble-content]:bg-primary/80 *:data-[slot=bubble-content]:backdrop-blur-3xl *:data-[slot=bubble-content]:text-primary-foreground *:data-[slot=bubble-content]:shadow-[0_4px_16px_rgba(0,0,0,0.1),0_1px_2px_rgba(255,255,255,0.3)_inset] *:data-[slot=bubble-content]:border *:data-[slot=bubble-content]:border-primary-foreground/20 [&>[data-slot=bubble-content]:is(button,a):hover]:bg-primary/60",
         destructive:
           "*:data-[slot=bubble-content]:bg-destructive/10 *:data-[slot=bubble-content]:text-destructive dark:*:data-[slot=bubble-content]:bg-destructive/20 [&>[data-slot=bubble-content]:is(button,a):hover]:bg-destructive/20 dark:[&>[data-slot=bubble-content]:is(button,a):hover]:bg-destructive/30",
       },

@@ -98,14 +98,14 @@ export function SettingsModal({
   if (!showSettings) return null;
 
   return (
-    <div className="fixed inset-0 z-100 flex items-center justify-center bg-black/50 backdrop-blur-md animate-in fade-in duration-200" onClick={() => { setShowSettings(false); setViewHistory(['main']); setDirection('forward'); }}>
-      <div className="w-full h-full sm:w-[90%] max-w-none sm:max-w-md sm:h-auto rounded-none sm:rounded-[32px] bg-background/95 sm:bg-background/85 backdrop-blur-3xl p-6 sm:shadow-2xl border-0 sm:border border-white/10 animate-in slide-in-from-right-8 sm:slide-in-from-right-0 sm:zoom-in-95 duration-300 overflow-y-auto" onClick={(e) => { e.stopPropagation(); setIsFontDropdownOpen(false); }}>
+    <div className="absolute inset-0 z-50 flex flex-col bg-background/80 backdrop-blur-3xl animate-in fade-in slide-in-from-left-8 duration-300" onClick={(e) => { e.stopPropagation(); setIsFontDropdownOpen(false); }}>
+      <div className="flex-1 w-full p-4 sm:p-5 overflow-y-auto no-scrollbar pb-10">
         <div key={activeSettingsView} className={`w-full ${direction === 'forward' && activeSettingsView !== 'main' ? 'animate-in fade-in slide-in-from-right-8 duration-300' : ''} ${direction === 'backward' ? 'animate-in fade-in slide-in-from-left-8 duration-300' : ''}`}>
         {activeSettingsView === 'main' ? (
           <>
-            <div className="flex items-center justify-between mb-4">
-              <h2 className="text-[22px] font-bold tracking-tight">Settings</h2>
-              <button onClick={() => { setShowSettings(false); setViewHistory(['main']); setDirection('forward'); }} className="rounded-full bg-secondary/80 p-2 hover:bg-secondary text-foreground transition-colors">
+            <div className="relative flex items-center justify-center mb-6 h-8">
+              <h2 className="text-[16px] font-semibold tracking-tight">Settings</h2>
+              <button onClick={() => { setShowSettings(false); setViewHistory(['main']); setDirection('forward'); }} className="absolute right-0 rounded-full bg-black/5 dark:bg-white/5 p-1.5 hover:bg-black/10 dark:hover:bg-white/10 text-foreground transition-colors">
                 <X className="w-5 h-5" />
               </button>
             </div>
@@ -123,67 +123,67 @@ export function SettingsModal({
             </div>
             
             <div className="bg-card/60 backdrop-blur-xl rounded-[24px] overflow-hidden border border-white/5 shadow-sm">
-              <button onClick={() => navigateTo('profile')} className="flex w-full items-center gap-4 px-4 py-3.5 text-left hover:bg-accent/50 transition-colors border-b border-border/50">
-                <div className="bg-blue-500 p-1.5 rounded-[10px] text-white shadow-sm"><Bot className="w-5 h-5" /></div>
+              <button onClick={() => navigateTo('profile')} className="flex w-full items-center gap-3 px-4 py-2.5 text-left hover:bg-accent/50 transition-colors border-b border-border/50">
+                <div className="bg-blue-500 p-1 rounded-lg text-white shadow-sm"><Bot className="w-4.5 h-4.5" /></div>
                 <div className="flex-1">
-                  <div className="text-[15px] font-medium text-foreground">Bot Profile</div>
+                  <div className="text-[14px] font-medium text-foreground">Bot Profile</div>
                 </div>
-                <ChevronRight className="w-5 h-5 text-muted-foreground/50" />
+                <ChevronRight className="w-4.5 h-4.5 text-muted-foreground/50" />
               </button>
-              <button onClick={() => navigateTo('security')} className="flex w-full items-center gap-4 px-4 py-3.5 text-left hover:bg-accent/50 transition-colors border-b border-border/50">
-                <div className="bg-emerald-500 p-1.5 rounded-[10px] text-white shadow-sm"><Shield className="w-5 h-5" /></div>
+              <button onClick={() => navigateTo('security')} className="flex w-full items-center gap-3 px-4 py-2.5 text-left hover:bg-accent/50 transition-colors border-b border-border/50">
+                <div className="bg-emerald-500 p-1 rounded-lg text-white shadow-sm"><Shield className="w-4.5 h-4.5" /></div>
                 <div className="flex-1">
-                  <div className="text-[15px] font-medium text-foreground">Privacy & Security</div>
+                  <div className="text-[14px] font-medium text-foreground">Privacy & Security</div>
                 </div>
-                <ChevronRight className="w-5 h-5 text-muted-foreground/50" />
+                <ChevronRight className="w-4.5 h-4.5 text-muted-foreground/50" />
               </button>
-              <button onClick={() => navigateTo('passcode')} className="flex w-full items-center gap-4 px-4 py-3.5 text-left hover:bg-accent/50 transition-colors border-b border-border/50">
-                <div className="bg-slate-700 dark:bg-slate-400 p-1.5 rounded-[10px] text-white shadow-sm"><Lock className="w-5 h-5" /></div>
+              <button onClick={() => navigateTo('passcode')} className="flex w-full items-center gap-3 px-4 py-2.5 text-left hover:bg-accent/50 transition-colors border-b border-border/50">
+                <div className="bg-slate-700 dark:bg-slate-400 p-1 rounded-lg text-white shadow-sm"><Lock className="w-4.5 h-4.5" /></div>
                 <div className="flex-1">
-                  <div className="text-[15px] font-medium text-foreground">Passcode Lock</div>
+                  <div className="text-[14px] font-medium text-foreground">Passcode Lock</div>
                 </div>
-                <ChevronRight className="w-5 h-5 text-muted-foreground/50" />
+                <ChevronRight className="w-4.5 h-4.5 text-muted-foreground/50" />
               </button>
-              <button onClick={() => navigateTo('notifications')} className="flex w-full items-center gap-4 px-4 py-3.5 text-left hover:bg-accent/50 transition-colors border-b border-border/50">
-                <div className="bg-red-500 p-1.5 rounded-[10px] text-white shadow-sm"><Bell className="w-5 h-5" /></div>
+              <button onClick={() => navigateTo('notifications')} className="flex w-full items-center gap-3 px-4 py-2.5 text-left hover:bg-accent/50 transition-colors border-b border-border/50">
+                <div className="bg-red-500 p-1 rounded-lg text-white shadow-sm"><Bell className="w-4.5 h-4.5" /></div>
                 <div className="flex-1">
-                  <div className="text-[15px] font-medium text-foreground">Notifications</div>
+                  <div className="text-[14px] font-medium text-foreground">Notifications</div>
                 </div>
-                <ChevronRight className="w-5 h-5 text-muted-foreground/50" />
+                <ChevronRight className="w-4.5 h-4.5 text-muted-foreground/50" />
               </button>
-              <button onClick={() => navigateTo('access-control')} className="flex w-full items-center gap-4 px-4 py-3.5 text-left hover:bg-accent/50 transition-colors border-b border-border/50">
-                <div className="bg-sky-500 p-1.5 rounded-[10px] text-white shadow-sm"><Users className="w-5 h-5" /></div>
+              <button onClick={() => navigateTo('access-control')} className="flex w-full items-center gap-3 px-4 py-2.5 text-left hover:bg-accent/50 transition-colors border-b border-border/50">
+                <div className="bg-sky-500 p-1 rounded-lg text-white shadow-sm"><Users className="w-4.5 h-4.5" /></div>
                 <div className="flex-1">
-                  <div className="text-[15px] font-medium text-foreground">Access Control</div>
+                  <div className="text-[14px] font-medium text-foreground">Access Control</div>
                 </div>
-                <ChevronRight className="w-5 h-5 text-muted-foreground/50" />
+                <ChevronRight className="w-4.5 h-4.5 text-muted-foreground/50" />
               </button>
-              <button onClick={() => navigateTo('appearance')} className="flex w-full items-center gap-4 px-4 py-3.5 text-left hover:bg-accent/50 transition-colors">
-                <div className="bg-indigo-500 p-1.5 rounded-[10px] text-white shadow-sm"><Palette className="w-5 h-5" /></div>
+              <button onClick={() => navigateTo('appearance')} className="flex w-full items-center gap-3 px-4 py-2.5 text-left hover:bg-accent/50 transition-colors">
+                <div className="bg-indigo-500 p-1 rounded-lg text-white shadow-sm"><Palette className="w-4.5 h-4.5" /></div>
                 <div className="flex-1">
-                  <div className="text-[15px] font-medium text-foreground">Appearance</div>
+                  <div className="text-[14px] font-medium text-foreground">Appearance</div>
                 </div>
-                <ChevronRight className="w-5 h-5 text-muted-foreground/50" />
+                <ChevronRight className="w-4.5 h-4.5 text-muted-foreground/50" />
               </button>
             </div>
 
             <div className="bg-card/60 backdrop-blur-xl rounded-[24px] overflow-hidden border border-white/5 shadow-sm mt-4">
-              <button onClick={() => navigateTo('switch-bot')} className="flex w-full items-center gap-4 px-4 py-3.5 text-left hover:bg-accent/50 transition-colors">
-                <div className="bg-orange-500 p-1.5 rounded-[10px] text-white shadow-sm"><Bot className="w-5 h-5" /></div>
+              <button onClick={() => navigateTo('switch-bot')} className="flex w-full items-center gap-3 px-4 py-2.5 text-left hover:bg-accent/50 transition-colors">
+                <div className="bg-orange-500 p-1 rounded-lg text-white shadow-sm"><Bot className="w-4.5 h-4.5" /></div>
                 <div className="flex-1">
-                  <div className="text-[15px] font-medium text-foreground">Switch Account (Bot)</div>
+                  <div className="text-[14px] font-medium text-foreground">Switch Account (Bot)</div>
                 </div>
-                <ChevronRight className="w-5 h-5 text-muted-foreground/50" />
+                <ChevronRight className="w-4.5 h-4.5 text-muted-foreground/50" />
               </button>
             </div>
 
             <div className="bg-card/60 backdrop-blur-xl rounded-[24px] overflow-hidden border border-white/5 shadow-sm mt-4">
               <button 
                 onClick={() => window.location.href = '/login'}
-                className="flex w-full items-center justify-center gap-3 px-4 py-3.5 hover:bg-destructive/10 transition-colors group"
+                className="flex w-full items-center justify-center gap-2 px-4 py-3 hover:bg-destructive/10 transition-colors group"
               >
-                <LogOut className="w-5 h-5 text-red-500 group-hover:text-red-600 transition-colors" />
-                <div className="text-[15px] font-medium text-red-500 group-hover:text-red-600 transition-colors">Log Out</div>
+                <LogOut className="w-4.5 h-4.5 text-red-500 group-hover:text-red-600 transition-colors" />
+                <div className="text-[14px] font-medium text-red-500 group-hover:text-red-600 transition-colors">Log Out</div>
               </button>
             </div>
           </>

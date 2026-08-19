@@ -178,7 +178,7 @@ export function ChatInput({
   return (
     <div className="relative mx-auto w-full max-w-4xl px-3 pb-4 sm:px-8">
       {replyTo && (
-        <div className="absolute inset-x-3 bottom-[calc(100%-16px)] sm:inset-x-8 z-0 flex items-center gap-2 rounded-t-xl bg-card/80 px-3 pb-5 pt-2 shadow-sm backdrop-blur-xl border-t border-x border-border animate-in fade-in slide-in-from-bottom-6 duration-200 ease-out">
+        <div className="absolute inset-x-3 bottom-[calc(100%-16px)] sm:inset-x-8 z-0 flex items-center gap-2 rounded-t-4xl bg-card/80 px-3 pb-5 pt-2 shadow-sm backdrop-blur-xl border-t border-x border-border animate-in fade-in slide-in-from-bottom-6 duration-200 ease-out">
           <div className="w-1 rounded-full bg-primary self-stretch my-0.5"></div>
           <div className="flex-1 min-w-0 pl-3 pr-2 py-0.5">
             <div className="font-semibold text-primary text-[13px] leading-tight">{replyTo.author}</div>
@@ -189,12 +189,12 @@ export function ChatInput({
           </button>
         </div>
       )}
-      <div className="flex items-end gap-2 relative z-10 rounded-xl bg-card px-3 py-2 shadow-sm">
+      <div className="flex items-end gap-2 relative z-10 rounded-[28px] bg-background/70 backdrop-blur-3xl px-3 py-2 border border-black/10 dark:border-white/10 shadow-[0_8px_32px_rgba(0,0,0,0.12),0_1px_1px_rgba(255,255,255,0.15)_inset]">
         <div className="relative group/attach pb-1">
           <button aria-label="Attach file" className="rounded-full p-2 text-muted-foreground hover:bg-accent hover:text-foreground transition-colors">
             <Paperclip className="w-5 h-5" />
           </button>
-          <div className="absolute bottom-full left-0 z-50 mb-2 flex flex-col gap-1 rounded-xl bg-card/95 backdrop-blur-md p-1.5 shadow-xl border border-border opacity-0 invisible transition-all group-hover/attach:visible group-hover/attach:opacity-100 scale-95 group-hover/attach:scale-100 w-48 origin-bottom-left">
+          <div className="absolute bottom-full left-0 z-50 mb-2 flex flex-col gap-1 rounded-[24px] bg-background backdrop-blur-3xl p-1.5 shadow-[0_10px_40px_rgba(0,0,0,0.2),0_2px_12px_rgba(255,255,255,0.2)_inset] border border-white/10 opacity-0 invisible transition-all group-hover/attach:visible group-hover/attach:opacity-100 scale-95 group-hover/attach:scale-100 w-48 origin-bottom-left">
             <button className="flex items-center gap-3 rounded-lg px-2 py-2 text-sm hover:bg-accent transition-colors w-full text-left font-medium">
               <ImageIcon className="w-4 h-4 text-sky-500" /> Photo or Video
             </button>
@@ -225,10 +225,10 @@ export function ChatInput({
           <button aria-label="Add emoji" className="rounded-full p-2 text-muted-foreground hover:bg-accent hover:text-foreground transition-colors">
             <Smile className="w-5 h-5" />
           </button>
-          <div className="absolute bottom-full right-0 z-50 mb-2 flex flex-col rounded-2xl bg-card/95 backdrop-blur-md shadow-2xl border border-border opacity-0 invisible transition-all group-hover/emoji:visible group-hover/emoji:opacity-100 scale-95 group-hover/emoji:scale-100 w-80 h-80 origin-bottom-right overflow-hidden">
+          <div className="absolute bottom-full right-0 z-50 mb-2 flex flex-col rounded-[24px] bg-background/70 backdrop-blur-3xl shadow-[0_10px_40px_rgba(0,0,0,0.2),0_2px_12px_rgba(255,255,255,0.2)_inset] border border-white/10 opacity-0 invisible transition-all group-hover/emoji:visible group-hover/emoji:opacity-100 scale-95 group-hover/emoji:scale-100 w-80 h-80 origin-bottom-right overflow-hidden">
             {/* Search Bar */}
-            <div className="px-2 pt-2 pb-1 border-b border-border/50">
-              <div className="flex items-center gap-2 rounded-lg bg-accent/50 px-2 py-1.5 text-sm transition focus-within:bg-accent focus-within:ring-1 focus-within:ring-ring">
+            <div className="px-2 pt-2 pb-1 border-b border-white/5">
+              <div className="flex items-center gap-2 rounded-[16px] bg-black/10 dark:bg-white/10 px-2 py-1.5 text-sm transition focus-within:bg-black/20 dark:focus-within:bg-white/20 focus-within:ring-2 focus-within:ring-primary/30 border border-white/5 shadow-[0_1px_5px_rgba(0,0,0,0.1)_inset]">
                 <Search className="w-4 h-4 text-muted-foreground" />
                 <input 
                   type="text" 
@@ -291,7 +291,7 @@ export function ChatInput({
             </div>
 
             {/* Tab Bar */}
-            <div className="flex flex-row items-center justify-around gap-1 bg-card/80 backdrop-blur-md p-2 border-t border-border">
+            <div className="flex flex-row items-center justify-around gap-1 bg-background/40 backdrop-blur-md p-2 border-t border-white/5">
               <button 
                 onClick={() => handleTabChange('emoji')}
                 className={`flex-1 flex items-center justify-center gap-2 rounded-full py-1.5 text-sm font-medium transition-colors ${activeEmojiTab === 'emoji' ? 'bg-accent text-accent-foreground' : 'text-muted-foreground hover:bg-accent hover:text-accent-foreground'}`}

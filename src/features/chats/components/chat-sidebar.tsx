@@ -111,14 +111,14 @@ export function ChatSidebar({ mobileView, setMobileView, activeChatId, setActive
 
   return (
     <aside 
-      className={`relative shrink-0 w-full lg:w-(--sidebar-width) flex-col overflow-hidden lg:rounded-r-none rounded-[16px] border-white/50 bg-sidebar shadow-xl ${mobileView === 'sidebar' ? 'flex animate-in fade-in slide-in-from-left-8 lg:animate-none duration-300' : 'hidden lg:flex'}`}
+      className={`relative shrink-0 w-full lg:w-(--sidebar-width) flex-col overflow-hidden lg:rounded-[32px] lg:border border-white/10 bg-background/40 backdrop-blur-3xl shadow-[0_30px_60px_rgba(0,0,0,0.12),0_0_0_1px_rgba(255,255,255,0.1)_inset,0_2px_12px_rgba(255,255,255,0.2)_inset] ${mobileView === 'sidebar' ? 'flex animate-in fade-in slide-in-from-left-8 lg:animate-none duration-300' : 'hidden lg:flex'}`}
       style={{ '--sidebar-width': `${sidebarWidth}px` } as React.CSSProperties}
     >
       <div 
         className="hidden lg:block absolute top-0 bottom-0 right-0 w-1 cursor-col-resize hover:bg-primary/50 active:bg-primary transition-colors z-60"
         onMouseDown={(e) => { e.preventDefault(); setIsResizing(true); }}
       />
-      <div className="flex flex-col gap-4 px-4 pt-5 pb-2 border-b border-border/50 bg-background/50 backdrop-blur-xl sticky top-0 z-10">
+      <div className="flex flex-col gap-4 px-4 pt-5 pb-2 border-b border-white/10 bg-transparent sticky top-0 z-10">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
             <button onClick={() => { setSettingsView(undefined); setShowSettings(true); }} aria-label="Menu" className="grid size-9 place-items-center rounded-full bg-accent hover:bg-accent/80 active:scale-95 transition-all lg:hidden">
@@ -138,7 +138,7 @@ export function ChatSidebar({ mobileView, setMobileView, activeChatId, setActive
           </div>
         </div>
 
-        <label className="flex items-center gap-2 rounded-[12px] bg-accent/60 px-3 py-2 text-sm text-muted-foreground focus-within:bg-accent focus-within:ring-2 focus-within:ring-primary/20 transition-all border border-transparent focus-within:border-border/50">
+        <label className="flex items-center gap-2 rounded-[20px] bg-black/5 dark:bg-white/5 px-3 py-2.5 text-sm text-muted-foreground focus-within:bg-background/80 focus-within:ring-4 focus-within:ring-primary/20 transition-all border border-white/10 shadow-[0_2px_10px_rgba(0,0,0,0.02)_inset]">
           <Search className="w-4 h-4 text-muted-foreground/70" />
           <input
             className="w-full bg-transparent outline-none placeholder:text-muted-foreground/70 text-foreground font-medium"
@@ -155,10 +155,10 @@ export function ChatSidebar({ mobileView, setMobileView, activeChatId, setActive
               role="tab"
               aria-selected={activeTab === tab}
               onClick={() => setActiveTab(tab)}
-              className={`whitespace-nowrap rounded-full px-4 py-1.5 text-[13px] font-medium transition-all active:scale-[0.97] ${
+              className={`whitespace-nowrap rounded-[18px] px-4 py-1.5 text-[13px] font-semibold transition-all duration-300 active:scale-[0.97] ${
                 activeTab === tab
-                  ? 'bg-blue-500 text-white shadow-sm'
-                  : 'bg-accent/50 text-muted-foreground hover:bg-accent hover:text-foreground border border-border/50'
+                  ? 'bg-background/80 text-foreground shadow-[0_2px_10px_rgba(0,0,0,0.1),0_1px_1px_rgba(255,255,255,0.2)_inset] border border-white/10'
+                  : 'bg-black/5 dark:bg-white/5 text-muted-foreground hover:bg-black/10 dark:hover:bg-white/10 border border-white/5'
               }`}
             >
               {tab}

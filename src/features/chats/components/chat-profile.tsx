@@ -6,17 +6,13 @@ interface ChatProfileProps {
 
 export function ChatProfile({ onClose }: ChatProfileProps) {
   return (
-    <aside className="flex w-full h-full md:w-100 md:h-[85vh] lg:w-87.5 lg:h-full md:rounded-3xl lg:rounded-none shrink-0 flex-col overflow-hidden bg-background md:border lg:border-y-0 lg:border-r-0 lg:border-l border-border animate-in slide-in-from-bottom-8 md:zoom-in-95 lg:zoom-in-100 lg:slide-in-from-right-8 duration-300 md:shadow-2xl lg:shadow-none">
-      <header className="flex h-17 items-center justify-between border-b border-border bg-card px-4 shadow-sm">
-        <h2 className="text-[16px] font-semibold">User Info</h2>
-        <button onClick={onClose} aria-label="Close profile" className="rounded-full p-2 text-muted-foreground hover:bg-accent">
+    <aside className="flex w-full h-full md:w-100 md:h-[85vh] lg:w-87.5 lg:h-full md:rounded-[32px] lg:rounded-[32px] shrink-0 flex-col overflow-hidden bg-background/40 backdrop-blur-3xl border border-white/10 shadow-[0_30px_60px_rgba(0,0,0,0.12),0_0_0_1px_rgba(255,255,255,0.1)_inset,0_2px_12px_rgba(255,255,255,0.2)_inset] animate-in slide-in-from-bottom-8 md:zoom-in-95 lg:zoom-in-100 lg:slide-in-from-right-8 duration-300 relative">
+      <div className="flex-1 overflow-y-auto relative">
+        <button onClick={onClose} aria-label="Close profile" className="absolute top-4 right-4 z-50 rounded-full p-2 text-muted-foreground hover:bg-black/10 dark:hover:bg-white/10 transition-colors">
           <X className="w-5 h-5" />
         </button>
-      </header>
-
-      <div className="flex-1 overflow-y-auto">
         {/* Profile Header */}
-        <div className="flex flex-col items-center py-8 border-b border-border bg-card/30">
+        <div className="flex flex-col items-center pt-10 pb-8 border-b border-white/5 bg-black/5 dark:bg-white/5 relative">
           <div className="grid size-24 place-items-center rounded-full bg-sky-500 text-3xl font-semibold text-white shadow-md mb-4">
             QL
           </div>
@@ -25,7 +21,7 @@ export function ChatProfile({ onClose }: ChatProfileProps) {
         </div>
 
         {/* Info Section */}
-        <div className="p-4 border-b border-border">
+        <div className="p-4 border-b border-white/5">
           <div className="text-[13px] font-semibold text-primary mb-3">Info</div>
           <div className="flex items-center gap-4 mb-4">
             <Phone className="w-5 h-5 text-muted-foreground" />
@@ -60,7 +56,7 @@ export function ChatProfile({ onClose }: ChatProfileProps) {
         </div>
 
         {/* Shared Media */}
-        <div className="p-4 border-b border-border">
+        <div className="p-4 border-b border-white/5">
           <div className="flex items-center justify-between mb-3">
             <div className="text-[13px] font-semibold text-primary">Shared Media</div>
           </div>

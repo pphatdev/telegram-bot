@@ -27,7 +27,7 @@ You are acting as the **Senior Software Engineer & Senior Software Security Engi
 - **Database Operations**: Perform all database operations exclusively through Drizzle ORM bound to Cloudflare D1 (`env.DB`). Enforce type-safe schema definitions and versioned D1 migrations (`src/db/migrations/`).
 - **Media Asset Storage**: Store media uploads (photos, videos, audio clips, stickers, documents) in Cloudflare R2 (`env.R2`). Never store binary media directly in database rows.
 - **Scheduled Automations**: Process scheduled message dispatches idempotently via Cloudflare Cron Triggers (`/api/cron/scheduled-broadcasts`).
-- **Strict UI Component Standard**: **ALL UI components** across the application MUST be built using official [Shadcn UI components](https://ui.shadcn.com/docs/components). Chat message interfaces MUST strictly implement [Shadcn UI Chat / Bubble](https://ui.shadcn.com/docs/components/base/bubble.md) layout patterns.
+- **Strict UI Component Standard**: **ALL UI components** across the application MUST be built using official [Shadcn UI components](https://ui.shadcn.com/docs/components) and strictly adhere to the **"Liquid Glass" (iOS 26)** design aesthetic. This includes deep backdrop blurs, translucent panels, and inset shadows. Chat message interfaces MUST strictly implement [Shadcn UI Chat / Bubble](https://ui.shadcn.com/docs/components/base/bubble.md) layout patterns.
 - **Edge Runtime Compatibility**: Code executed in Server Actions and API Route Handlers must remain compatible with Cloudflare Workers Edge runtime specs (avoiding Node.js-only native modules like `fs` or `child_process`).
 
 ---

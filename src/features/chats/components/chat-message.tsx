@@ -58,7 +58,7 @@ export function ChatMessage({
             </span>
           )}
 
-          <Bubble align={align} variant="glass" className={(isEnd || reactions?.length) ? 'mb-2' : ''}>
+          <Bubble align={align} variant={isEnd ? "glass-primary" as any : "glass"} className={(isEnd || reactions?.length) ? 'mb-2' : ''}>
             <BubbleContent className={bubbleClasses}>
               {!isEnd && author && (
                 <p className={`mb-0.5 text-[13px] font-semibold text-${authorColorClass.split('-')[1]}-500`}>
