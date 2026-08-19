@@ -5,10 +5,12 @@ import { ChatSidebar } from "@/features/chats/components/chat-sidebar";
 import { ChatHeader } from "@/features/chats/components/chat-header";
 import { ChatMessage } from "@/features/chats/components/chat-message";
 import { ChatInput } from "@/features/chats/components/chat-input";
+import { ChatProfile } from "@/features/chats/components/chat-profile";
 
 export default function ChatPage() {
   const [mobileView, setMobileView] = useState<'sidebar' | 'chat'>('sidebar');
   const [activeChatId, setActiveChatId] = useState<number | null>(null);
+  const [showProfile, setShowProfile] = useState(false);
   const [replyTo, setReplyTo] = useState<{ author: string; text: string } | null>(null);
   const [activeEmojiTab, setActiveEmojiTab] = useState<'emoji' | 'sticker' | 'gif'>('emoji');
   const inputRef = useRef<HTMLTextAreaElement>(null);
@@ -20,14 +22,18 @@ export default function ChatPage() {
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'Escape' && activeChatId !== null) {
-        setActiveChatId(null);
-        setMobileView('sidebar');
+      if (e.key === 'Escape') {
+        if (showProfile) {
+          setShowProfile(false);
+        } else if (activeChatId !== null) {
+          setActiveChatId(null);
+          setMobileView('sidebar');
+        }
       }
     };
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [activeChatId]);
+  }, [activeChatId, showProfile]);
   
   return (
     <main className="flex h-screen bg-background p-1">
@@ -39,7 +45,7 @@ export default function ChatPage() {
       />
 
       {activeChatId === null ? (
-        <section className={`glass min-w-0 flex-1 flex-col overflow-hidden lg:rounded-l-none rounded-[16px] bg-chat-pattern ${mobileView === 'chat' ? 'flex animate-in fade-in slide-in-from-right-8 lg:animate-none duration-300' : 'hidden lg:flex'}`}>
+        <section className={`glass min-w-0 flex-1 flex-col overflow-hidden bg-chat-pattern ${mobileView === 'chat' ? 'flex animate-in fade-in slide-in-from-right-8 lg:animate-none duration-300' : 'hidden lg:flex'}`}>
           <div className="flex flex-1 items-center justify-center">
             <div className="bg-card/40 backdrop-blur-md rounded-full px-6 py-2 text-[14px] font-medium text-foreground shadow-sm border border-white/5">
               Select a chat to start messaging
@@ -47,14 +53,16 @@ export default function ChatPage() {
           </div>
         </section>
       ) : (
-        <section className={`glass min-w-0 flex-1 flex-col overflow-hidden lg:rounded-l-none rounded-[16px] bg-chat-pattern ${mobileView === 'chat' ? 'flex animate-in fade-in slide-in-from-right-8 lg:animate-none duration-300' : 'hidden lg:flex'}`}>
-          <ChatHeader 
-            setMobileView={setMobileView} 
-            closeChat={() => {
-              setActiveChatId(null);
-              setMobileView('sidebar');
-            }} 
-          />
+        <>
+          <section className={`glass min-w-0 flex-1 flex-col overflow-hidden bg-chat-pattern ${mobileView === 'chat' && !showProfile ? 'flex animate-in fade-in slide-in-from-right-8 lg:animate-none duration-300' : 'hidden lg:flex'}`}>
+            <ChatHeader 
+              setMobileView={setMobileView} 
+              closeChat={() => {
+                setActiveChatId(null);
+                setMobileView('sidebar');
+              }}
+              onProfileClick={() => setShowProfile(!showProfile)}
+            />
         
         <div className="mx-auto flex w-full max-w-4xl flex-1 flex-col overflow-hidden px-3 sm:px-8">
           <div className="flex-1 overflow-y-auto py-6">
@@ -107,7 +115,14 @@ export default function ChatPage() {
             setActiveEmojiTab={setActiveEmojiTab}
           />
         </div>
-        </section>
+          </section>
+          
+          {showProfile && (
+            <div className={mobileView === 'chat' ? 'absolute inset-0 z-50 flex md:items-center md:justify-center md:bg-black/20 md:backdrop-blur-sm lg:bg-transparent lg:backdrop-blur-none lg:static lg:block lg:w-auto lg:h-auto' : 'hidden lg:block'}>
+              <ChatProfile onClose={() => setShowProfile(false)} />
+            </div>
+          )}
+        </>
       )}
     </main>
   );
