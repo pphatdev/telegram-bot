@@ -1,6 +1,6 @@
 "use client";
 
-import { Search, Pencil, Menu, Settings, Shield } from "lucide-react";
+import { Search, Pencil, Menu, Settings, Shield, Pin, PinOff, Archive, MessageCircle, BellOff, Trash2 } from "lucide-react";
 import { useState, useEffect } from "react";
 import { SettingsModal } from "./settings-modal";
 
@@ -13,20 +13,28 @@ interface ChatSidebarProps {
 
 type ChatType = 'All' | 'Personal' | 'Group' | 'Channel';
 
-const MOCK_CHATS = [
-  { id: 1, name: 'Saved Messages', type: 'Personal', time: '10:42', message: 'You: Launch notes and ideas', avatarText: '★', avatarColor: 'bg-slate-500' },
-  { id: 2, name: 'Q3 launch planning', type: 'Group', time: '10:18', message: 'You: Let’s review the timeline', avatarText: 'QL', avatarColor: 'bg-sky-500', active: true },
-  { id: 3, name: 'Product team', type: 'Group', time: 'Yesterday', message: 'Maya: The new draft is ready', avatarText: 'PT', avatarColor: 'bg-emerald-500' },
-  { id: 4, name: 'Design review', type: 'Channel', time: 'Friday', message: 'Alex sent an image', avatarText: 'DR', avatarColor: 'bg-violet-500' },
+const INITIAL_CHATS = [
+  { id: 1, name: 'Saved Messages', type: 'Personal', time: '10:42', message: 'You: Launch notes and ideas', avatarText: '★', avatarColor: 'bg-slate-500', pinned: true },
+  { id: 2, name: 'Q3 launch planning', type: 'Group', time: '10:18', message: 'You: Let’s review the timeline', avatarText: 'QL', avatarColor: 'bg-sky-500', pinned: false },
+  { id: 3, name: 'Product team', type: 'Group', time: 'Yesterday', message: 'Maya: The new draft is ready', avatarText: 'PT', avatarColor: 'bg-emerald-500', pinned: false },
+  { id: 4, name: 'Design review', type: 'Channel', time: 'Friday', message: 'Alex sent an image', avatarText: 'DR', avatarColor: 'bg-violet-500', pinned: false },
 ];
 
 export function ChatSidebar({ mobileView, setMobileView, activeChatId, setActiveChatId }: ChatSidebarProps) {
+  const [chats, setChats] = useState(INITIAL_CHATS);
   const [activeTab, setActiveTab] = useState<ChatType>('All');
   const [searchQuery, setSearchQuery] = useState('');
   const [showSettings, setShowSettings] = useState(false);
   const [theme, setTheme] = useState<'light' | 'dark' | 'system'>('dark');
   const [font, setFont] = useState<'inter' | 'geist' | 'kantumruy' | 'opensans' | 'sans-serif'>('inter');
   const [scale, setScale] = useState<number>(100);
+  const [contextMenu, setContextMenu] = useState<{ x: number; y: number; chatId: number } | null>(null);
+
+  useEffect(() => {
+    const handleClick = () => setContextMenu(null);
+    window.addEventListener('click', handleClick);
+    return () => window.removeEventListener('click', handleClick);
+  }, []);
 
 
   const handleScaleChange = (newScale: number) => {
@@ -64,13 +72,17 @@ export function ChatSidebar({ mobileView, setMobileView, activeChatId, setActive
     }
   };
 
-  const filteredChats = MOCK_CHATS.filter((chat) => {
-    const matchesTab = activeTab === 'All' || chat.type === activeTab;
-    const matchesSearch = 
-      chat.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
-      chat.message.toLowerCase().includes(searchQuery.toLowerCase());
-    return matchesTab && matchesSearch;
-  });
+  const filteredChats = chats
+    .filter(chat => {
+      const matchesTab = activeTab === 'All' || chat.type === activeTab;
+      const matchesSearch = chat.name.toLowerCase().includes(searchQuery.toLowerCase());
+      return matchesTab && matchesSearch;
+    })
+    .sort((a, b) => (b.pinned ? 1 : 0) - (a.pinned ? 1 : 0));
+
+  const togglePin = (chatId: number) => {
+    setChats(prev => prev.map(chat => chat.id === chatId ? { ...chat, pinned: !chat.pinned } : chat));
+  };
 
   return (
     <aside className={`w-full lg:w-82.5 flex-col overflow-hidden lg:rounded-r-none rounded-[16px]  border-white/50 bg-sidebar shadow-xl ${mobileView === 'sidebar' ? 'flex animate-in fade-in slide-in-from-left-8 lg:animate-none duration-300' : 'hidden lg:flex'}`}>
@@ -120,30 +132,48 @@ export function ChatSidebar({ mobileView, setMobileView, activeChatId, setActive
       </div>
       <nav aria-label="Chats" className="flex-1 overflow-y-auto py-2">
         {filteredChats.map((chat) => (
-          <button
-            key={chat.id}
-            onClick={() => {
-              setActiveChatId(chat.id);
-              setMobileView('chat');
+          <div 
+            key={chat.id} 
+            className="group relative"
+            onContextMenu={(e) => {
+              e.preventDefault();
+              setContextMenu({ x: e.clientX, y: e.clientY, chatId: chat.id });
             }}
-            className={`flex w-full items-center gap-3 px-4 py-2.5 text-left transition hover:bg-accent/60 ${activeChatId === chat.id ? 'bg-accent' : ''}`}
           >
-            <span className={`grid size-12 shrink-0 place-items-center rounded-full text-sm font-semibold text-white ${chat.avatarColor}`}>
-              {chat.avatarText}
-            </span>
-            <span className="min-w-0 flex-1">
-              <span className="flex items-center justify-between gap-2">
-                <span className="flex min-w-0 items-center gap-1.5">
-                  <span className="truncate text-[15px] font-medium">{chat.name}</span>
-                  <span className="shrink-0 rounded-full bg-primary/10 px-1.5 py-0.5 text-[10px] font-medium text-primary">
-                    {chat.type}
-                  </span>
-                </span>
-                <span className="shrink-0 text-xs text-muted-foreground">{chat.time}</span>
+            <button
+              onClick={() => {
+                setActiveChatId(chat.id);
+                setMobileView('chat');
+              }}
+              className={`flex w-full items-center gap-3 px-4 py-2.5 text-left transition hover:bg-accent/60 ${activeChatId === chat.id ? 'bg-accent' : ''}`}
+            >
+              <span className={`grid size-12 shrink-0 place-items-center rounded-full text-sm font-semibold text-white ${chat.avatarColor}`}>
+                {chat.avatarText}
               </span>
-              <span className="mt-0.5 block truncate text-sm text-muted-foreground">{chat.message}</span>
-            </span>
-          </button>
+              <span className="min-w-0 flex-1">
+                <span className="flex items-center justify-between gap-2">
+                  <span className="flex min-w-0 items-center gap-1.5">
+                    <span className="truncate text-[15px] font-medium">{chat.name}</span>
+                    {chat.pinned && (
+                      <Pin className="w-3.5 h-3.5 text-muted-foreground shrink-0 fill-muted-foreground/30" />
+                    )}
+                    <span className="shrink-0 rounded-full bg-primary/10 px-1.5 py-0.5 text-[10px] font-medium text-primary">
+                      {chat.type}
+                    </span>
+                  </span>
+                  <span className="shrink-0 text-xs text-muted-foreground">{chat.time}</span>
+                </span>
+                <span className="mt-0.5 block truncate text-sm text-muted-foreground">{chat.message}</span>
+              </span>
+            </button>
+            <button 
+              onClick={(e) => { e.stopPropagation(); togglePin(chat.id); }}
+              className="absolute right-3 top-1/2 -translate-y-1/2 p-1.5 rounded-full bg-background border border-border/50 text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity hover:text-foreground hover:bg-accent shadow-sm"
+              aria-label={chat.pinned ? "Unpin chat" : "Pin chat"}
+            >
+              {chat.pinned ? <PinOff className="w-4 h-4" /> : <Pin className="w-4 h-4" />}
+            </button>
+          </div>
         ))}
       </nav>
       <div className="hidden lg:block border-t border-border p-3">
@@ -155,7 +185,43 @@ export function ChatSidebar({ mobileView, setMobileView, activeChatId, setActive
         </button>
       </div>
 
+      {contextMenu && (
+        <div 
+          className="fixed z-[100] w-56 bg-card/95 backdrop-blur-md border border-white/10 rounded-xl shadow-2xl py-1 overflow-hidden animate-in fade-in zoom-in-95 duration-150"
+          style={{ top: contextMenu.y, left: contextMenu.x }}
+          onClick={(e) => e.stopPropagation()}
+        >
+          <button className="flex w-full items-center gap-3 px-3 py-2 text-sm text-foreground hover:bg-accent transition-colors">
+            <Archive className="w-4 h-4 text-muted-foreground" /> Archive
+          </button>
+          <button 
+            className="flex w-full items-center gap-3 px-3 py-2 text-sm text-foreground hover:bg-accent transition-colors"
+            onClick={() => {
+              togglePin(contextMenu.chatId);
+              setContextMenu(null);
+            }}
+          >
+            {chats.find(c => c.id === contextMenu.chatId)?.pinned ? (
+              <><PinOff className="w-4 h-4 text-muted-foreground" /> Unpin</>
+            ) : (
+              <><Pin className="w-4 h-4 text-muted-foreground" /> Pin</>
+            )}
+          </button>
+          <button className="flex w-full items-center gap-3 px-3 py-2 text-sm text-foreground hover:bg-accent transition-colors">
+            <MessageCircle className="w-4 h-4 text-muted-foreground" /> Mark as Unread
+          </button>
+          <button className="flex w-full items-center gap-3 px-3 py-2 text-sm text-foreground hover:bg-accent transition-colors">
+            <BellOff className="w-4 h-4 text-muted-foreground" /> Mute
+          </button>
+          <div className="h-px bg-border/50 my-1 mx-2" />
+          <button className="flex w-full items-center gap-3 px-3 py-2 text-sm text-destructive hover:bg-destructive/10 transition-colors">
+            <Trash2 className="w-4 h-4" /> Delete Chat
+          </button>
+        </div>
+      )}
+
       <SettingsModal 
+
         showSettings={showSettings}
         setShowSettings={setShowSettings}
         theme={theme}
