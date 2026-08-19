@@ -1,4 +1,4 @@
-import { Shield, X, User, Bell, Palette, ArrowLeft, Sun, Moon, Monitor, Check, Type, ChevronDown, ChevronRight, Bot, Lock, LogOut, Plus, Smartphone, KeyRound, ShieldCheck } from "lucide-react";
+import { Shield, X, User, Bell, Palette, ArrowLeft, Sun, Moon, Monitor, Check, Type, ChevronDown, ChevronRight, Bot, Lock, LogOut, Plus, Smartphone, KeyRound, ShieldCheck, Camera, Copy } from "lucide-react";
 import { useState, useEffect } from "react";
 
 interface SettingsModalProps {
@@ -39,6 +39,8 @@ export function SettingsModal({
   const [isPasscodeOn, setIsPasscodeOn] = useState(false);
   const [useBiometrics, setUseBiometrics] = useState(false);
   const [isFontDropdownOpen, setIsFontDropdownOpen] = useState(false);
+  const [botName, setBotName] = useState('Marketing Bot');
+  const [botDescription, setBotDescription] = useState('Automated marketing outreach and campaign management.');
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -80,12 +82,12 @@ export function SettingsModal({
                 <div className="absolute bottom-1 right-1 size-[22px] rounded-full bg-green-500 border-[3.5px] border-background">
                 </div>
               </div>
-              <h3 className="text-[22px] font-bold text-foreground tracking-tight">Marketing Bot</h3>
+              <h3 className="text-[22px] font-bold text-foreground tracking-tight">{botName}</h3>
               <p className="text-[15px] text-muted-foreground mt-0.5">@marketing_campaign_bot</p>
             </div>
             
             <div className="bg-card/60 backdrop-blur-xl rounded-[24px] overflow-hidden border border-white/5 shadow-sm">
-              <button className="flex w-full items-center gap-4 px-4 py-3.5 text-left hover:bg-accent/50 transition-colors border-b border-border/50">
+              <button onClick={() => navigateTo('profile')} className="flex w-full items-center gap-4 px-4 py-3.5 text-left hover:bg-accent/50 transition-colors border-b border-border/50">
                 <div className="bg-blue-500 p-1.5 rounded-[10px] text-white shadow-sm"><User className="w-5 h-5" /></div>
                 <div className="flex-1">
                   <div className="text-[15px] font-medium text-foreground">Personal Info</div>
@@ -137,6 +139,52 @@ export function SettingsModal({
                 <LogOut className="w-5 h-5 text-red-500 group-hover:text-red-600 transition-colors" />
                 <div className="text-[15px] font-medium text-red-500 group-hover:text-red-600 transition-colors">Log Out</div>
               </button>
+            </div>
+          </>
+        ) : activeSettingsView === 'profile' ? (
+          <>
+            <div className="relative flex items-center justify-center mb-8 h-8">
+              <button onClick={goBack} className="absolute left-0 flex items-center gap-1 text-primary hover:opacity-80 transition-opacity">
+                <ArrowLeft className="w-6 h-6 -ml-1" />
+                <span className="text-[15px]">Settings</span>
+              </button>
+              <h2 className="text-[15px] font-semibold tracking-tight">Bot Profile</h2>
+            </div>
+            
+            <div className="space-y-6">
+              <div className="flex justify-center mb-2 animate-in zoom-in-95 duration-300">
+                <div className="relative group cursor-pointer">
+                  <div className="grid size-[110px] place-items-center rounded-full bg-blue-500 text-[40px] font-bold text-white shadow-xl transition-transform group-active:scale-95">
+                    MB
+                  </div>
+                  <div className="absolute inset-0 rounded-full bg-black/40 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity">
+                    <Camera className="w-9 h-9 text-white" />
+                  </div>
+                  <div className="absolute bottom-0 right-1 grid size-[34px] place-items-center rounded-full bg-primary text-primary-foreground border-[3.5px] border-background shadow-sm">
+                    <Camera className="w-[18px] h-[18px]" />
+                  </div>
+                </div>
+              </div>
+
+              <div className="bg-card/60 backdrop-blur-xl rounded-[24px] overflow-hidden border border-white/5 shadow-sm">
+                <div className="p-4 border-b border-border/50 focus-within:bg-accent/30 transition-colors">
+                  <div className="text-[13px] font-semibold text-primary mb-1">Name</div>
+                  <input className="w-full bg-transparent text-[15px] font-medium text-foreground outline-none placeholder:text-muted-foreground/50" value={botName} onChange={(e) => setBotName(e.target.value)} />
+                </div>
+                <div className="p-4 border-b border-border/50">
+                  <div className="text-[13px] font-semibold text-primary mb-1">Username</div>
+                  <div className="flex items-center justify-between">
+                    <span className="text-[15px] text-foreground">@marketing_campaign_bot</span>
+                    <button className="text-primary hover:opacity-80 transition-opacity p-1 rounded-md hover:bg-primary/10"><Copy className="w-[18px] h-[18px]" /></button>
+                  </div>
+                  <p className="text-[13px] text-muted-foreground mt-2 leading-relaxed">This is your bot's public handle. Users can interact with your bot by searching for this username on Telegram.</p>
+                </div>
+                <div className="p-4 focus-within:bg-accent/30 transition-colors">
+                  <div className="text-[13px] font-semibold text-primary mb-1">About</div>
+                  <textarea className="w-full bg-transparent text-[15px] text-foreground outline-none resize-none placeholder:text-muted-foreground/50 leading-relaxed" rows={2} value={botDescription} onChange={(e) => setBotDescription(e.target.value)}></textarea>
+                  <p className="text-[13px] text-muted-foreground mt-1 leading-relaxed">This text will be shown on the bot's profile page and when users share your bot.</p>
+                </div>
+              </div>
             </div>
           </>
         ) : activeSettingsView === 'appearance' ? (
