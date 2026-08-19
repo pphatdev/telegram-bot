@@ -1,6 +1,6 @@
 "use client";
 
-import { Search, Pencil, Menu, Settings, Shield } from "lucide-react";
+import { Search, Pencil, Menu, Settings, Shield, X, User, Bell, Palette } from "lucide-react";
 import { useState } from "react";
 
 interface ChatSidebarProps {
@@ -20,6 +20,7 @@ const MOCK_CHATS = [
 export function ChatSidebar({ mobileView, setMobileView }: ChatSidebarProps) {
   const [activeTab, setActiveTab] = useState<ChatType>('All');
   const [searchQuery, setSearchQuery] = useState('');
+  const [showSettings, setShowSettings] = useState(false);
 
   const filteredChats = MOCK_CHATS.filter((chat) => {
     const matchesTab = activeTab === 'All' || chat.type === activeTab;
@@ -97,13 +98,58 @@ export function ChatSidebar({ mobileView, setMobileView }: ChatSidebarProps) {
         ))}
       </nav>
       <div className="border-t border-border p-3">
-        <button className="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-sm text-muted-foreground hover:bg-accent hover:text-foreground">
+        <button onClick={() => setShowSettings(true)} className="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-sm text-muted-foreground hover:bg-accent hover:text-foreground">
           <Settings className="w-4 h-4" /> Settings
         </button>
         <button className="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-sm text-muted-foreground hover:bg-accent hover:text-foreground">
           <Shield className="w-4 h-4" /> Whitelist & Blacklist
         </button>
       </div>
+
+      {/* Settings Popup */}
+      {showSettings && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/40 backdrop-blur-sm animate-in fade-in duration-200" onClick={() => setShowSettings(false)}>
+          <div className="w-[90%] max-w-md rounded-2xl glass bg-card/90 p-6 shadow-2xl animate-in zoom-in-95 duration-200" onClick={(e) => e.stopPropagation()}>
+            <div className="flex items-center justify-between mb-6">
+              <h2 className="text-xl font-semibold">Settings</h2>
+              <button onClick={() => setShowSettings(false)} className="rounded-full p-2 hover:bg-accent text-muted-foreground transition-colors">
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+            
+            <div className="space-y-2">
+              <button className="flex w-full items-center gap-4 rounded-xl p-3 text-left hover:bg-accent transition-colors">
+                <div className="bg-primary/10 p-2 rounded-lg text-primary"><User className="w-5 h-5" /></div>
+                <div>
+                  <div className="font-medium text-foreground">Personal Info</div>
+                  <div className="text-xs text-muted-foreground">Profile & Account</div>
+                </div>
+              </button>
+              <button className="flex w-full items-center gap-4 rounded-xl p-3 text-left hover:bg-accent transition-colors">
+                <div className="bg-emerald-500/10 p-2 rounded-lg text-emerald-500"><Shield className="w-5 h-5" /></div>
+                <div>
+                  <div className="font-medium text-foreground">Privacy & Security</div>
+                  <div className="text-xs text-muted-foreground">Whitelist & Blacklist</div>
+                </div>
+              </button>
+              <button className="flex w-full items-center gap-4 rounded-xl p-3 text-left hover:bg-accent transition-colors">
+                <div className="bg-amber-500/10 p-2 rounded-lg text-amber-500"><Bell className="w-5 h-5" /></div>
+                <div>
+                  <div className="font-medium text-foreground">Notifications</div>
+                  <div className="text-xs text-muted-foreground">Sounds & Alerts</div>
+                </div>
+              </button>
+              <button className="flex w-full items-center gap-4 rounded-xl p-3 text-left hover:bg-accent transition-colors">
+                <div className="bg-indigo-500/10 p-2 rounded-lg text-indigo-500"><Palette className="w-5 h-5" /></div>
+                <div>
+                  <div className="font-medium text-foreground">Appearance</div>
+                  <div className="text-xs text-muted-foreground">Theme & Colors</div>
+                </div>
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </aside>
   );
 }
