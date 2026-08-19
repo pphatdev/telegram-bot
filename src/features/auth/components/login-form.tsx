@@ -21,7 +21,7 @@ export function LoginForm() {
   };
 
   return (
-    <div className="w-full max-w-[420px] glass rounded-3xl p-8 shadow-2xl relative overflow-hidden animate-in fade-in zoom-in-95 duration-500">
+    <div className="w-full max-w-105 glass rounded-3xl p-8 shadow-2xl relative overflow-hidden animate-in fade-in zoom-in-95 duration-500">
       {/* Decorative background gradients */}
       <div className="absolute -top-32 -right-32 w-64 h-64 bg-primary/20 rounded-full blur-3xl pointer-events-none" />
       <div className="absolute -bottom-32 -left-32 w-64 h-64 bg-secondary/20 rounded-full blur-3xl pointer-events-none" />
@@ -66,9 +66,9 @@ export function LoginForm() {
           <button
             type="submit"
             disabled={isLoading || token.length < 20}
-            className="group relative w-full h-14 rounded-xl bg-gradient-to-r from-primary to-teal-400 text-primary-foreground font-medium text-[16px] transition-all flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed shadow-[0_4px_14px_rgba(13,148,136,0.4)] hover:shadow-[0_6px_25px_rgba(13,148,136,0.6)] active:scale-[0.98] overflow-hidden"
+            className="group relative w-full h-14 rounded-xl bg-linear-to-r from-primary to-teal-400 text-primary-foreground font-medium text-[16px] transition-all flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed shadow-[0_4px_14px_rgba(13,148,136,0.4)] hover:shadow-[0_6px_25px_rgba(13,148,136,0.6)] active:scale-[0.98] overflow-hidden"
           >
-            <div className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/20 to-transparent transition-transform duration-1000 group-hover:translate-x-full" />
+            <div className="absolute inset-0 -translate-x-full bg-linear-to-r from-transparent via-white/20 to-transparent transition-transform duration-1000 group-hover:translate-x-full" />
             
             {isLoading ? (
               <Loader2 className="w-5 h-5 animate-spin relative z-10" />

@@ -57,7 +57,7 @@ export function PasscodeLock({ onUnlock, correctPasscode = '1234' }: PasscodeLoc
   const dots = [0, 1, 2, 3];
 
   return (
-    <div className="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-background/80 backdrop-blur-2xl animate-in fade-in duration-300">
+    <div className="fixed inset-0 z-100 flex flex-col items-center justify-center bg-background/80 backdrop-blur-2xl animate-in fade-in duration-300">
       <div className={cn("flex flex-col items-center max-w-sm w-full px-8", shaking && "animate-shake")}>
         <div className="w-16 h-16 rounded-2xl bg-primary/10 flex items-center justify-center mb-6 shadow-[0_0_40px_rgba(13,148,136,0.2)] dark:shadow-[0_0_40px_rgba(13,148,136,0.1)]">
           <Lock className="w-8 h-8 text-primary" />
@@ -83,7 +83,7 @@ export function PasscodeLock({ onUnlock, correctPasscode = '1234' }: PasscodeLoc
           ))}
         </div>
 
-        <div className="grid grid-cols-3 gap-x-12 gap-y-6 w-full max-w-[280px]">
+        <div className="grid grid-cols-3 gap-x-12 gap-y-6 w-full max-w-70">
           {[1, 2, 3, 4, 5, 6, 7, 8, 9].map(num => (
             <button
               key={num}
