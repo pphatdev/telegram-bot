@@ -12,7 +12,7 @@ interface ChatHeaderProps {
 
 export function ChatHeader({ setMobileView, closeChat, onProfileClick, innerSearchQuery, setInnerSearchQuery, isSearchOpen, setIsSearchOpen }: ChatHeaderProps) {
   return (
-    <header className="flex h-17 items-center gap-3 border-b border-border bg-card px-4 shadow-sm sm:px-7 overflow-hidden">
+    <header className="flex h-17 min-w-[375px] items-center gap-3 border-b border-border bg-card px-4 shadow-sm sm:px-7 overflow-hidden">
       <button onClick={() => { setMobileView('sidebar'); if (closeChat) closeChat(); }} aria-label="Back to chats" className="rounded-full p-2 text-muted-foreground hover:bg-accent shrink-0">
         <ArrowLeft className="w-5 h-5" />
       </button>

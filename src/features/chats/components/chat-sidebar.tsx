@@ -9,6 +9,8 @@ interface ChatSidebarProps {
   setMobileView: (view: 'sidebar' | 'chat') => void;
   activeChatId: number | null;
   setActiveChatId: (id: number) => void;
+  sidebarWidth: number;
+  setSidebarWidth: (width: number) => void;
 }
 
 type ChatType = 'All' | 'Personal' | 'Group' | 'Channel';
@@ -20,7 +22,7 @@ const INITIAL_CHATS = [
   { id: 4, name: 'Design review', type: 'Channel', time: 'Friday', message: 'Alex sent an image', avatarText: 'DR', avatarColor: 'bg-violet-500', pinned: false },
 ];
 
-export function ChatSidebar({ mobileView, setMobileView, activeChatId, setActiveChatId }: ChatSidebarProps) {
+export function ChatSidebar({ mobileView, setMobileView, activeChatId, setActiveChatId, sidebarWidth, setSidebarWidth }: ChatSidebarProps) {
   const [chats, setChats] = useState(INITIAL_CHATS);
   const [activeTab, setActiveTab] = useState<ChatType>('All');
   const [searchQuery, setSearchQuery] = useState('');
@@ -29,6 +31,28 @@ export function ChatSidebar({ mobileView, setMobileView, activeChatId, setActive
   const [font, setFont] = useState<'inter' | 'geist' | 'kantumruy' | 'opensans' | 'sans-serif'>('inter');
   const [scale, setScale] = useState<number>(100);
   const [contextMenu, setContextMenu] = useState<{ x: number; y: number; chatId: number } | null>(null);
+  
+  const [isResizing, setIsResizing] = useState(false);
+
+  useEffect(() => {
+    if (!isResizing) return;
+    const handleMouseMove = (e: MouseEvent) => {
+      const newWidth = Math.min(Math.max(e.clientX, 280), 600);
+      setSidebarWidth(newWidth);
+    };
+    const handleMouseUp = () => {
+      setIsResizing(false);
+      document.body.style.cursor = 'default';
+    };
+    document.addEventListener('mousemove', handleMouseMove);
+    document.addEventListener('mouseup', handleMouseUp);
+    document.body.style.cursor = 'col-resize';
+    return () => {
+      document.removeEventListener('mousemove', handleMouseMove);
+      document.removeEventListener('mouseup', handleMouseUp);
+      document.body.style.cursor = 'default';
+    };
+  }, [isResizing]);
 
   useEffect(() => {
     const handleClick = () => setContextMenu(null);
@@ -85,7 +109,14 @@ export function ChatSidebar({ mobileView, setMobileView, activeChatId, setActive
   };
 
   return (
-    <aside className={`w-full lg:w-82.5 flex-col overflow-hidden lg:rounded-r-none rounded-[16px]  border-white/50 bg-sidebar shadow-xl ${mobileView === 'sidebar' ? 'flex animate-in fade-in slide-in-from-left-8 lg:animate-none duration-300' : 'hidden lg:flex'}`}>
+    <aside 
+      className={`relative shrink-0 w-full lg:w-[var(--sidebar-width)] flex-col overflow-hidden lg:rounded-r-none rounded-[16px] border-white/50 bg-sidebar shadow-xl ${mobileView === 'sidebar' ? 'flex animate-in fade-in slide-in-from-left-8 lg:animate-none duration-300' : 'hidden lg:flex'}`}
+      style={{ '--sidebar-width': `${sidebarWidth}px` } as React.CSSProperties}
+    >
+      <div 
+        className="hidden lg:block absolute top-0 bottom-0 right-0 w-1 cursor-col-resize hover:bg-primary/50 active:bg-primary transition-colors z-[60]"
+        onMouseDown={(e) => { e.preventDefault(); setIsResizing(true); }}
+      />
       <div className="flex flex-col gap-4 px-4 pt-5 pb-2 border-b border-border/50 bg-background/50 backdrop-blur-xl sticky top-0 z-10">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
