@@ -41,6 +41,9 @@ export function SettingsModal({
   const [isFontDropdownOpen, setIsFontDropdownOpen] = useState(false);
   const [botName, setBotName] = useState('Marketing Bot');
   const [botDescription, setBotDescription] = useState('Automated marketing outreach and campaign management.');
+  const [messagePreview, setMessagePreview] = useState(true);
+  const [soundEnabled, setSoundEnabled] = useState(true);
+  const [desktopNotifications, setDesktopNotifications] = useState(true);
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -108,7 +111,7 @@ export function SettingsModal({
                 </div>
                 <ChevronRight className="w-5 h-5 text-muted-foreground/50" />
               </button>
-              <button className="flex w-full items-center gap-4 px-4 py-3.5 text-left hover:bg-accent/50 transition-colors border-b border-border/50">
+              <button onClick={() => navigateTo('notifications')} className="flex w-full items-center gap-4 px-4 py-3.5 text-left hover:bg-accent/50 transition-colors border-b border-border/50">
                 <div className="bg-red-500 p-1.5 rounded-[10px] text-white shadow-sm"><Bell className="w-5 h-5" /></div>
                 <div className="flex-1">
                   <div className="text-[15px] font-medium text-foreground">Notifications</div>
@@ -184,6 +187,52 @@ export function SettingsModal({
                   <textarea className="w-full bg-transparent text-[15px] text-foreground outline-none resize-none placeholder:text-muted-foreground/50 leading-relaxed" rows={2} value={botDescription} onChange={(e) => setBotDescription(e.target.value)}></textarea>
                   <p className="text-[13px] text-muted-foreground mt-1 leading-relaxed">This text will be shown on the bot's profile page and when users share your bot.</p>
                 </div>
+              </div>
+            </div>
+          </>
+        ) : activeSettingsView === 'notifications' ? (
+          <>
+            <div className="relative flex items-center justify-center mb-8 h-8">
+              <button onClick={goBack} className="absolute left-0 flex items-center gap-1 text-primary hover:opacity-80 transition-opacity">
+                <ArrowLeft className="w-6 h-6 -ml-1" />
+                <span className="text-[15px]">Settings</span>
+              </button>
+              <h2 className="text-[15px] font-semibold tracking-tight">Notifications</h2>
+            </div>
+            
+            <div className="space-y-6">
+              <div className="bg-card/60 backdrop-blur-xl rounded-[24px] overflow-hidden border border-white/5 shadow-sm">
+                <div className="flex w-full items-center justify-between px-4 py-3.5 border-b border-border/50">
+                  <div className="text-[15px] font-medium text-foreground">Desktop Notifications</div>
+                  <button 
+                    className={`w-12 h-7 rounded-full p-1 transition-colors ${desktopNotifications ? 'bg-green-500' : 'bg-black/10 dark:bg-white/10'}`}
+                    onClick={() => setDesktopNotifications(!desktopNotifications)}
+                  >
+                    <div className={`w-5 h-5 bg-white rounded-full shadow-sm transform transition-transform ${desktopNotifications ? 'translate-x-5' : 'translate-x-0'}`} />
+                  </button>
+                </div>
+                <div className="flex w-full items-center justify-between px-4 py-3.5 border-b border-border/50">
+                  <div className="text-[15px] font-medium text-foreground">Message Preview</div>
+                  <button 
+                    className={`w-12 h-7 rounded-full p-1 transition-colors ${messagePreview ? 'bg-green-500' : 'bg-black/10 dark:bg-white/10'}`}
+                    onClick={() => setMessagePreview(!messagePreview)}
+                  >
+                    <div className={`w-5 h-5 bg-white rounded-full shadow-sm transform transition-transform ${messagePreview ? 'translate-x-5' : 'translate-x-0'}`} />
+                  </button>
+                </div>
+                <div className="flex w-full items-center justify-between px-4 py-3.5">
+                  <div className="text-[15px] font-medium text-foreground">Play Sound</div>
+                  <button 
+                    className={`w-12 h-7 rounded-full p-1 transition-colors ${soundEnabled ? 'bg-green-500' : 'bg-black/10 dark:bg-white/10'}`}
+                    onClick={() => setSoundEnabled(!soundEnabled)}
+                  >
+                    <div className={`w-5 h-5 bg-white rounded-full shadow-sm transform transition-transform ${soundEnabled ? 'translate-x-5' : 'translate-x-0'}`} />
+                  </button>
+                </div>
+              </div>
+              
+              <div className="text-[13px] text-muted-foreground px-2 leading-relaxed">
+                Choose how you want to be notified about new messages and events from this bot.
               </div>
             </div>
           </>
