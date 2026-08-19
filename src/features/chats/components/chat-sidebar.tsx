@@ -1,6 +1,6 @@
 "use client";
 
-import { Search, Pencil, Menu, Settings, Shield, X, User, Bell, Palette, ArrowLeft, Sun, Moon, Monitor, Check, Type, ChevronDown, ChevronRight, Bot } from "lucide-react";
+import { Search, Pencil, Menu, Settings, Shield, X, User, Bell, Palette, ArrowLeft, Sun, Moon, Monitor, Check, Type, ChevronDown, ChevronRight, Bot, Lock } from "lucide-react";
 import { useState, useEffect } from "react";
 
 interface ChatSidebarProps {
@@ -21,7 +21,9 @@ export function ChatSidebar({ mobileView, setMobileView }: ChatSidebarProps) {
   const [activeTab, setActiveTab] = useState<ChatType>('All');
   const [searchQuery, setSearchQuery] = useState('');
   const [showSettings, setShowSettings] = useState(false);
-  const [activeSettingsView, setActiveSettingsView] = useState<'main' | 'appearance'>('main');
+  const [activeSettingsView, setActiveSettingsView] = useState<'main' | 'appearance' | 'passcode'>('main');
+  const [isPasscodeOn, setIsPasscodeOn] = useState(false);
+  const [useBiometrics, setUseBiometrics] = useState(false);
   const [theme, setTheme] = useState<'light' | 'dark' | 'system'>('dark');
   const [font, setFont] = useState<'inter' | 'geist' | 'kantumruy' | 'opensans' | 'sans-serif'>('inter');
   const [isFontDropdownOpen, setIsFontDropdownOpen] = useState(false);
@@ -37,7 +39,7 @@ export function ChatSidebar({ mobileView, setMobileView }: ChatSidebarProps) {
       if (e.key === 'Escape') {
         if (isFontDropdownOpen) {
           setIsFontDropdownOpen(false);
-        } else if (activeSettingsView === 'appearance') {
+        } else if (activeSettingsView === 'appearance' || activeSettingsView === 'passcode') {
           setActiveSettingsView('main');
         } else if (showSettings) {
           setShowSettings(false);
@@ -191,6 +193,13 @@ export function ChatSidebar({ mobileView, setMobileView }: ChatSidebarProps) {
                     </div>
                     <ChevronRight className="w-5 h-5 text-muted-foreground/50" />
                   </button>
+                  <button onClick={() => setActiveSettingsView('passcode')} className="flex w-full items-center gap-4 px-4 py-3.5 text-left hover:bg-accent/50 transition-colors border-b border-border/50">
+                    <div className="bg-slate-700 dark:bg-slate-400 p-1.5 rounded-[10px] text-white shadow-sm"><Lock className="w-5 h-5" /></div>
+                    <div className="flex-1">
+                      <div className="text-[17px] font-medium text-foreground">Passcode Lock</div>
+                    </div>
+                    <ChevronRight className="w-5 h-5 text-muted-foreground/50" />
+                  </button>
                   <button className="flex w-full items-center gap-4 px-4 py-3.5 text-left hover:bg-accent/50 transition-colors border-b border-border/50">
                     <div className="bg-red-500 p-1.5 rounded-[10px] text-white shadow-sm"><Bell className="w-5 h-5" /></div>
                     <div className="flex-1">
@@ -217,7 +226,7 @@ export function ChatSidebar({ mobileView, setMobileView }: ChatSidebarProps) {
                   </button>
                 </div>
               </>
-            ) : (
+            ) : activeSettingsView === 'appearance' ? (
               <>
                 <div className="relative flex items-center justify-center mb-8 h-8">
                   <button onClick={() => setActiveSettingsView('main')} className="absolute left-0 flex items-center gap-1 text-primary hover:opacity-80 transition-opacity">
@@ -341,7 +350,63 @@ export function ChatSidebar({ mobileView, setMobileView }: ChatSidebarProps) {
                   </div>
                 </div>
               </>
-            )}
+            ) : activeSettingsView === 'passcode' ? (
+              <>
+                <div className="relative flex items-center justify-center mb-8 h-8">
+                  <button onClick={() => setActiveSettingsView('main')} className="absolute left-0 flex items-center gap-1 text-primary hover:opacity-80 transition-opacity">
+                    <ArrowLeft className="w-6 h-6 -ml-1" />
+                    <span className="text-[17px]">Settings</span>
+                  </button>
+                  <h2 className="text-[17px] font-semibold tracking-tight">Passcode Lock</h2>
+                </div>
+                
+                <div className="space-y-6 animate-in fade-in slide-in-from-right-8 duration-300">
+                  <div className="bg-card/60 backdrop-blur-xl rounded-[24px] overflow-hidden border border-white/5 shadow-sm">
+                    <div className="flex w-full items-center justify-between px-4 py-3.5">
+                      <div className="text-[17px] font-medium text-foreground">Turn Passcode On</div>
+                      <button 
+                        className={`w-12 h-7 rounded-full p-1 transition-colors ${isPasscodeOn ? 'bg-green-500' : 'bg-black/10 dark:bg-white/10'}`}
+                        onClick={() => setIsPasscodeOn(!isPasscodeOn)}
+                      >
+                        <div className={`w-5 h-5 bg-white rounded-full shadow-sm transform transition-transform ${isPasscodeOn ? 'translate-x-5' : 'translate-x-0'}`} />
+                      </button>
+                    </div>
+                    {isPasscodeOn && (
+                      <div className="animate-in slide-in-from-top-2 fade-in duration-200">
+                        <div className="h-[1px] w-full bg-border/50" />
+                        <button className="flex w-full items-center justify-between px-4 py-3.5 text-left hover:bg-accent/50 transition-colors">
+                          <div className="text-[17px] font-medium text-primary">Change Passcode</div>
+                        </button>
+                        <div className="h-[1px] w-full bg-border/50" />
+                        <button className="flex w-full items-center justify-between px-4 py-3.5 text-left hover:bg-accent/50 transition-colors">
+                          <div className="text-[17px] font-medium text-foreground">Auto-Lock</div>
+                          <div className="flex items-center gap-1 text-muted-foreground">
+                            <span className="text-[17px]">1 hr</span>
+                            <ChevronRight className="w-5 h-5 opacity-50" />
+                          </div>
+                        </button>
+                        <div className="h-[1px] w-full bg-border/50" />
+                        <div className="flex w-full items-center justify-between px-4 py-3.5">
+                          <div className="text-[17px] font-medium text-foreground">Unlock with Biometrics</div>
+                          <button 
+                            className={`w-12 h-7 rounded-full p-1 transition-colors ${useBiometrics ? 'bg-green-500' : 'bg-black/10 dark:bg-white/10'}`}
+                            onClick={() => setUseBiometrics(!useBiometrics)}
+                          >
+                            <div className={`w-5 h-5 bg-white rounded-full shadow-sm transform transition-transform ${useBiometrics ? 'translate-x-5' : 'translate-x-0'}`} />
+                          </button>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                  
+                  {isPasscodeOn && (
+                    <p className="text-[13px] text-muted-foreground px-4 text-center animate-in fade-in duration-300">
+                      When a passcode is set, a lock icon appears at the top of your chats list. Tap it to lock your app.
+                    </p>
+                  )}
+                </div>
+              </>
+            ) : null}
           </div>
         </div>
       )}
