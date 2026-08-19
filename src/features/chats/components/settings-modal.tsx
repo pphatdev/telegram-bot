@@ -1,4 +1,4 @@
-import { Shield, X, User, Bell, Palette, ArrowLeft, Sun, Moon, Monitor, Check, Type, ChevronDown, ChevronRight, Bot, Lock, LogOut } from "lucide-react";
+import { Shield, X, User, Bell, Palette, ArrowLeft, Sun, Moon, Monitor, Check, Type, ChevronDown, ChevronRight, Bot, Lock, LogOut, Plus } from "lucide-react";
 import { useState, useEffect } from "react";
 
 interface SettingsModalProps {
@@ -22,7 +22,7 @@ export function SettingsModal({
   scale,
   handleScaleChange
 }: SettingsModalProps) {
-  const [activeSettingsView, setActiveSettingsView] = useState<'main' | 'appearance' | 'passcode'>('main');
+  const [activeSettingsView, setActiveSettingsView] = useState<'main' | 'appearance' | 'passcode' | 'switch-bot'>('main');
   const [isPasscodeOn, setIsPasscodeOn] = useState(false);
   const [useBiometrics, setUseBiometrics] = useState(false);
   const [isFontDropdownOpen, setIsFontDropdownOpen] = useState(false);
@@ -32,7 +32,7 @@ export function SettingsModal({
       if (e.key === 'Escape') {
         if (isFontDropdownOpen) {
           setIsFontDropdownOpen(false);
-        } else if (activeSettingsView === 'appearance' || activeSettingsView === 'passcode') {
+        } else if (activeSettingsView !== 'main') {
           setActiveSettingsView('main');
         } else if (showSettings) {
           setShowSettings(false);
@@ -97,7 +97,7 @@ export function SettingsModal({
             </div>
 
             <div className="bg-card/60 backdrop-blur-xl rounded-[24px] overflow-hidden border border-white/5 shadow-sm mt-4">
-              <button className="flex w-full items-center gap-4 px-4 py-3.5 text-left hover:bg-accent/50 transition-colors">
+              <button onClick={() => setActiveSettingsView('switch-bot')} className="flex w-full items-center gap-4 px-4 py-3.5 text-left hover:bg-accent/50 transition-colors">
                 <div className="bg-orange-500 p-1.5 rounded-[10px] text-white shadow-sm"><Bot className="w-5 h-5" /></div>
                 <div className="flex-1">
                   <div className="text-[17px] font-medium text-foreground">Switch Account (Bot)</div>
@@ -291,6 +291,49 @@ export function SettingsModal({
                   When a passcode is set, a lock icon appears at the top of your chats list. Tap it to lock your app.
                 </p>
               )}
+            </div>
+          </>
+        ) : activeSettingsView === 'switch-bot' ? (
+          <>
+            <div className="relative flex items-center justify-center mb-8 h-8">
+              <button onClick={() => setActiveSettingsView('main')} className="absolute left-0 flex items-center gap-1 text-primary hover:opacity-80 transition-opacity">
+                <ArrowLeft className="w-6 h-6 -ml-1" />
+                <span className="text-[17px]">Settings</span>
+              </button>
+              <h2 className="text-[17px] font-semibold tracking-tight">Switch Account</h2>
+            </div>
+            
+            <div className="space-y-6 animate-in fade-in slide-in-from-right-8 duration-300">
+              <div className="bg-card/60 backdrop-blur-xl rounded-[24px] overflow-hidden border border-white/5 shadow-sm">
+                <button className="flex w-full items-center gap-4 px-4 py-3.5 text-left hover:bg-accent/50 transition-colors border-b border-border/50">
+                  <div className="relative">
+                    <div className="grid size-10 place-items-center rounded-full bg-blue-500 text-sm font-semibold text-white shadow-sm">MB</div>
+                    <div className="absolute -bottom-0.5 -right-0.5 grid size-4 place-items-center rounded-full bg-green-500 border-2 border-background">
+                      <Check className="w-2.5 h-2.5 text-white" />
+                    </div>
+                  </div>
+                  <div className="flex-1">
+                    <div className="text-[17px] font-medium text-foreground">Marketing Bot</div>
+                    <div className="text-[13px] text-muted-foreground">@marketing_campaign_bot</div>
+                  </div>
+                </button>
+                <button className="flex w-full items-center gap-4 px-4 py-3.5 text-left hover:bg-accent/50 transition-colors border-b border-border/50">
+                  <div className="grid size-10 place-items-center rounded-full bg-emerald-500 text-sm font-semibold text-white shadow-sm">SB</div>
+                  <div className="flex-1">
+                    <div className="text-[17px] font-medium text-foreground">Support Bot</div>
+                    <div className="text-[13px] text-muted-foreground">@customer_support_bot</div>
+                  </div>
+                </button>
+                <button className="flex w-full items-center gap-4 px-4 py-3.5 text-left hover:bg-accent/50 transition-colors">
+                  <div className="grid size-10 place-items-center rounded-full bg-secondary text-primary shadow-sm border border-border"><Plus className="w-5 h-5" /></div>
+                  <div className="flex-1">
+                    <div className="text-[17px] font-medium text-primary">Add Bot Account</div>
+                  </div>
+                </button>
+              </div>
+              <p className="text-[13px] text-muted-foreground px-4 text-center animate-in fade-in duration-300">
+                You can manage multiple bot accounts and seamlessly switch between them to manage broadcasts and settings.
+              </p>
             </div>
           </>
         ) : null}
