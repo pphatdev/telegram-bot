@@ -70,7 +70,7 @@ export function ChatSidebar({ mobileView, setMobileView }: ChatSidebarProps) {
   });
 
   return (
-    <aside className={`w-full lg:w-82.5 flex-col overflow-hidden lg:rounded-r-none rounded-[16px]  border-white/50 bg-sidebar shadow-xl ${mobileView === 'sidebar' ? 'flex' : 'hidden lg:flex'}`}>
+    <aside className={`w-full lg:w-82.5 flex-col overflow-hidden lg:rounded-r-none rounded-[16px]  border-white/50 bg-sidebar shadow-xl ${mobileView === 'sidebar' ? 'flex animate-in fade-in slide-in-from-left-8 lg:animate-none duration-300' : 'hidden lg:flex'}`}>
       <div className="flex items-center gap-3 bg-primary/90 px-4 py-4 text-primary-foreground backdrop-blur-xl">
         <button aria-label="Menu" className="rounded-full p-1 hover:bg-primary-foreground/15 lg:hidden">
           <Menu className="w-5 h-5" />

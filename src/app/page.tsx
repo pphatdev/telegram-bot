@@ -21,7 +21,7 @@ export default function ChatPage() {
     <main className="flex h-screen bg-background p-1">
       <ChatSidebar mobileView={mobileView} setMobileView={setMobileView} />
 
-      <section className={`glass min-w-0 flex-1 flex-col overflow-hidden lg:rounded-l-none rounded-[16px] bg-chat-pattern ${mobileView === 'chat' ? 'flex' : 'hidden lg:flex'}`}>
+      <section className={`glass min-w-0 flex-1 flex-col overflow-hidden lg:rounded-l-none rounded-[16px] bg-chat-pattern ${mobileView === 'chat' ? 'flex animate-in fade-in slide-in-from-right-8 lg:animate-none duration-300' : 'hidden lg:flex'}`}>
         <ChatHeader setMobileView={setMobileView} />
         
         <div className="mx-auto flex w-full max-w-4xl flex-1 flex-col overflow-hidden px-3 sm:px-8">
