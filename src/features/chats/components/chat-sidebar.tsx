@@ -1,6 +1,6 @@
 "use client";
 
-import { Search, Pencil, Menu, Settings, Shield, X, User, Bell, Palette, ArrowLeft, Sun, Moon, Monitor, Check, Type, ChevronDown, ChevronRight } from "lucide-react";
+import { Search, Pencil, Menu, Settings, Shield, X, User, Bell, Palette, ArrowLeft, Sun, Moon, Monitor, Check, Type, ChevronDown, ChevronRight, Bot } from "lucide-react";
 import { useState, useEffect } from "react";
 
 interface ChatSidebarProps {
@@ -202,6 +202,16 @@ export function ChatSidebar({ mobileView, setMobileView }: ChatSidebarProps) {
                     <div className="bg-indigo-500 p-1.5 rounded-[10px] text-white shadow-sm"><Palette className="w-5 h-5" /></div>
                     <div className="flex-1">
                       <div className="text-[17px] font-medium text-foreground">Appearance</div>
+                    </div>
+                    <ChevronRight className="w-5 h-5 text-muted-foreground/50" />
+                  </button>
+                </div>
+
+                <div className="bg-card/60 backdrop-blur-xl rounded-[24px] overflow-hidden border border-white/5 shadow-sm mt-4">
+                  <button className="flex w-full items-center gap-4 px-4 py-3.5 text-left hover:bg-accent/50 transition-colors">
+                    <div className="bg-orange-500 p-1.5 rounded-[10px] text-white shadow-sm"><Bot className="w-5 h-5" /></div>
+                    <div className="flex-1">
+                      <div className="text-[17px] font-medium text-foreground">Switch Account (Bot)</div>
                     </div>
                     <ChevronRight className="w-5 h-5 text-muted-foreground/50" />
                   </button>
