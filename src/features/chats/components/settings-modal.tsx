@@ -22,7 +22,20 @@ export function SettingsModal({
   scale,
   handleScaleChange
 }: SettingsModalProps) {
-  const [activeSettingsView, setActiveSettingsView] = useState<'main' | 'appearance' | 'passcode' | 'switch-bot' | 'security'>('main');
+  const [viewHistory, setViewHistory] = useState<string[]>(['main']);
+  const [direction, setDirection] = useState<'forward' | 'backward'>('forward');
+  const activeSettingsView = viewHistory[viewHistory.length - 1];
+  
+  const navigateTo = (view: string) => {
+    setDirection('forward');
+    setViewHistory(prev => [...prev, view]);
+  };
+  
+  const goBack = () => {
+    setDirection('backward');
+    setViewHistory(prev => prev.length > 1 ? prev.slice(0, -1) : prev);
+  };
+
   const [isPasscodeOn, setIsPasscodeOn] = useState(false);
   const [useBiometrics, setUseBiometrics] = useState(false);
   const [isFontDropdownOpen, setIsFontDropdownOpen] = useState(false);
@@ -32,8 +45,8 @@ export function SettingsModal({
       if (e.key === 'Escape') {
         if (isFontDropdownOpen) {
           setIsFontDropdownOpen(false);
-        } else if (activeSettingsView !== 'main') {
-          setActiveSettingsView('main');
+        } else if (viewHistory.length > 1) {
+          goBack();
         } else if (showSettings) {
           setShowSettings(false);
         }
@@ -42,18 +55,19 @@ export function SettingsModal({
     
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [isFontDropdownOpen, activeSettingsView, showSettings]);
+  }, [isFontDropdownOpen, viewHistory, showSettings]);
 
   if (!showSettings) return null;
 
   return (
-    <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/50 backdrop-blur-md animate-in fade-in duration-200" onClick={() => { setShowSettings(false); setActiveSettingsView('main'); }}>
+    <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/50 backdrop-blur-md animate-in fade-in duration-200" onClick={() => { setShowSettings(false); setViewHistory(['main']); setDirection('forward'); }}>
       <div className="w-[90%] max-w-sm sm:max-w-md rounded-[32px] bg-background/85 backdrop-blur-3xl p-6 shadow-2xl border border-white/10 animate-in zoom-in-95 duration-300" onClick={(e) => { e.stopPropagation(); setIsFontDropdownOpen(false); }}>
+        <div key={activeSettingsView} className={`w-full ${direction === 'forward' && activeSettingsView !== 'main' ? 'animate-in fade-in slide-in-from-right-8 duration-300' : ''} ${direction === 'backward' ? 'animate-in fade-in slide-in-from-left-8 duration-300' : ''}`}>
         {activeSettingsView === 'main' ? (
           <>
             <div className="flex items-center justify-between mb-8">
               <h2 className="text-[28px] font-bold tracking-tight">Settings</h2>
-              <button onClick={() => { setShowSettings(false); setActiveSettingsView('main'); }} className="rounded-full bg-secondary/80 p-2 hover:bg-secondary text-foreground transition-colors">
+              <button onClick={() => { setShowSettings(false); setViewHistory(['main']); setDirection('forward'); }} className="rounded-full bg-secondary/80 p-2 hover:bg-secondary text-foreground transition-colors">
                 <X className="w-5 h-5" />
               </button>
             </div>
@@ -66,14 +80,14 @@ export function SettingsModal({
                 </div>
                 <ChevronRight className="w-5 h-5 text-muted-foreground/50" />
               </button>
-              <button onClick={() => setActiveSettingsView('security')} className="flex w-full items-center gap-4 px-4 py-3.5 text-left hover:bg-accent/50 transition-colors border-b border-border/50">
+              <button onClick={() => navigateTo('security')} className="flex w-full items-center gap-4 px-4 py-3.5 text-left hover:bg-accent/50 transition-colors border-b border-border/50">
                 <div className="bg-emerald-500 p-1.5 rounded-[10px] text-white shadow-sm"><Shield className="w-5 h-5" /></div>
                 <div className="flex-1">
                   <div className="text-[17px] font-medium text-foreground">Privacy & Security</div>
                 </div>
                 <ChevronRight className="w-5 h-5 text-muted-foreground/50" />
               </button>
-              <button onClick={() => setActiveSettingsView('passcode')} className="flex w-full items-center gap-4 px-4 py-3.5 text-left hover:bg-accent/50 transition-colors border-b border-border/50">
+              <button onClick={() => navigateTo('passcode')} className="flex w-full items-center gap-4 px-4 py-3.5 text-left hover:bg-accent/50 transition-colors border-b border-border/50">
                 <div className="bg-slate-700 dark:bg-slate-400 p-1.5 rounded-[10px] text-white shadow-sm"><Lock className="w-5 h-5" /></div>
                 <div className="flex-1">
                   <div className="text-[17px] font-medium text-foreground">Passcode Lock</div>
@@ -87,7 +101,7 @@ export function SettingsModal({
                 </div>
                 <ChevronRight className="w-5 h-5 text-muted-foreground/50" />
               </button>
-              <button onClick={() => setActiveSettingsView('appearance')} className="flex w-full items-center gap-4 px-4 py-3.5 text-left hover:bg-accent/50 transition-colors">
+              <button onClick={() => navigateTo('appearance')} className="flex w-full items-center gap-4 px-4 py-3.5 text-left hover:bg-accent/50 transition-colors">
                 <div className="bg-indigo-500 p-1.5 rounded-[10px] text-white shadow-sm"><Palette className="w-5 h-5" /></div>
                 <div className="flex-1">
                   <div className="text-[17px] font-medium text-foreground">Appearance</div>
@@ -97,7 +111,7 @@ export function SettingsModal({
             </div>
 
             <div className="bg-card/60 backdrop-blur-xl rounded-[24px] overflow-hidden border border-white/5 shadow-sm mt-4">
-              <button onClick={() => setActiveSettingsView('switch-bot')} className="flex w-full items-center gap-4 px-4 py-3.5 text-left hover:bg-accent/50 transition-colors">
+              <button onClick={() => navigateTo('switch-bot')} className="flex w-full items-center gap-4 px-4 py-3.5 text-left hover:bg-accent/50 transition-colors">
                 <div className="bg-orange-500 p-1.5 rounded-[10px] text-white shadow-sm"><Bot className="w-5 h-5" /></div>
                 <div className="flex-1">
                   <div className="text-[17px] font-medium text-foreground">Switch Account (Bot)</div>
@@ -116,14 +130,14 @@ export function SettingsModal({
         ) : activeSettingsView === 'appearance' ? (
           <>
             <div className="relative flex items-center justify-center mb-8 h-8">
-              <button onClick={() => setActiveSettingsView('main')} className="absolute left-0 flex items-center gap-1 text-primary hover:opacity-80 transition-opacity">
+              <button onClick={goBack} className="absolute left-0 flex items-center gap-1 text-primary hover:opacity-80 transition-opacity">
                 <ArrowLeft className="w-6 h-6 -ml-1" />
                 <span className="text-[17px]">Settings</span>
               </button>
               <h2 className="text-[17px] font-semibold tracking-tight">Appearance</h2>
             </div>
             
-            <div className="space-y-6 animate-in fade-in slide-in-from-right-8 duration-300">
+            <div className="space-y-6">
               <div>
                 <div className="text-[13px] uppercase tracking-wider font-semibold text-muted-foreground mb-2 px-3">Theme</div>
                 <div role="tablist" className="flex bg-secondary/50 rounded-xl p-1 border border-white/5">
@@ -240,14 +254,14 @@ export function SettingsModal({
         ) : activeSettingsView === 'passcode' ? (
           <>
             <div className="relative flex items-center justify-center mb-8 h-8">
-              <button onClick={() => setActiveSettingsView('main')} className="absolute left-0 flex items-center gap-1 text-primary hover:opacity-80 transition-opacity">
+              <button onClick={goBack} className="absolute left-0 flex items-center gap-1 text-primary hover:opacity-80 transition-opacity">
                 <ArrowLeft className="w-6 h-6 -ml-1" />
                 <span className="text-[17px]">Settings</span>
               </button>
               <h2 className="text-[17px] font-semibold tracking-tight">Passcode Lock</h2>
             </div>
             
-            <div className="space-y-6 animate-in fade-in slide-in-from-right-8 duration-300">
+            <div className="space-y-6">
               <div className="bg-card/60 backdrop-blur-xl rounded-[24px] overflow-hidden border border-white/5 shadow-sm">
                 <div className="flex w-full items-center justify-between px-4 py-3.5">
                   <div className="text-[17px] font-medium text-foreground">Turn Passcode On</div>
@@ -296,14 +310,14 @@ export function SettingsModal({
         ) : activeSettingsView === 'switch-bot' ? (
           <>
             <div className="relative flex items-center justify-center mb-8 h-8">
-              <button onClick={() => setActiveSettingsView('main')} className="absolute left-0 flex items-center gap-1 text-primary hover:opacity-80 transition-opacity">
+              <button onClick={goBack} className="absolute left-0 flex items-center gap-1 text-primary hover:opacity-80 transition-opacity">
                 <ArrowLeft className="w-6 h-6 -ml-1" />
                 <span className="text-[17px]">Settings</span>
               </button>
               <h2 className="text-[17px] font-semibold tracking-tight">Switch Account</h2>
             </div>
             
-            <div className="space-y-6 animate-in fade-in slide-in-from-right-8 duration-300">
+            <div className="space-y-6">
               <div className="bg-card/60 backdrop-blur-xl rounded-[24px] overflow-hidden border border-white/5 shadow-sm">
                 <button className="flex w-full items-center gap-4 px-4 py-3.5 text-left hover:bg-accent/50 transition-colors border-b border-border/50">
                   <div className="relative">
@@ -339,14 +353,14 @@ export function SettingsModal({
         ) : activeSettingsView === 'security' ? (
           <>
             <div className="relative flex items-center justify-center mb-8 h-8">
-              <button onClick={() => setActiveSettingsView('main')} className="absolute left-0 flex items-center gap-1 text-primary hover:opacity-80 transition-opacity">
+              <button onClick={goBack} className="absolute left-0 flex items-center gap-1 text-primary hover:opacity-80 transition-opacity">
                 <ArrowLeft className="w-6 h-6 -ml-1" />
                 <span className="text-[17px]">Settings</span>
               </button>
               <h2 className="text-[17px] font-semibold tracking-tight">Privacy & Security</h2>
             </div>
             
-            <div className="space-y-6 animate-in fade-in slide-in-from-right-8 duration-300">
+            <div className="space-y-6">
               <div className="bg-card/60 backdrop-blur-xl rounded-[24px] overflow-hidden border border-white/5 shadow-sm">
                 <button className="flex w-full items-center gap-4 px-4 py-3.5 text-left hover:bg-accent/50 transition-colors border-b border-border/50">
                   <div className="bg-indigo-500 p-1.5 rounded-[10px] text-white shadow-sm"><KeyRound className="w-5 h-5" /></div>
@@ -364,7 +378,7 @@ export function SettingsModal({
                   <div className="text-[15px] text-muted-foreground mr-1">2 devices</div>
                   <ChevronRight className="w-5 h-5 text-muted-foreground/50" />
                 </button>
-                <button onClick={() => setActiveSettingsView('passcode')} className="flex w-full items-center gap-4 px-4 py-3.5 text-left hover:bg-accent/50 transition-colors">
+                <button onClick={() => navigateTo('passcode')} className="flex w-full items-center gap-4 px-4 py-3.5 text-left hover:bg-accent/50 transition-colors">
                   <div className="bg-slate-700 dark:bg-slate-400 p-1.5 rounded-[10px] text-white shadow-sm"><Lock className="w-5 h-5" /></div>
                   <div className="flex-1">
                     <div className="text-[17px] font-medium text-foreground">Passcode Lock</div>
@@ -391,6 +405,7 @@ export function SettingsModal({
             </div>
           </>
         ) : null}
+        </div>
       </div>
     </div>
   );
