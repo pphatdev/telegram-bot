@@ -39,8 +39,8 @@ export function SettingsModal({
   const [isPasscodeOn, setIsPasscodeOn] = useState(false);
   const [useBiometrics, setUseBiometrics] = useState(false);
   const [isFontDropdownOpen, setIsFontDropdownOpen] = useState(false);
-  const [botName, setBotName] = useState('Marketing Bot');
-  const [botDescription, setBotDescription] = useState('Automated marketing outreach and campaign management.');
+  const [botName, setBotName] = useState('Kfe Meetup Security Bot');
+  const [botDescription, setBotDescription] = useState('Security bot for Kfe Meetup events.');
   const [messagePreview, setMessagePreview] = useState(true);
   const [soundEnabled, setSoundEnabled] = useState(true);
   const [desktopNotifications, setDesktopNotifications] = useState(true);
@@ -110,7 +110,7 @@ export function SettingsModal({
                 </div>
               </div>
               <h3 className="text-[22px] font-bold text-foreground tracking-tight">{botName}</h3>
-              <p className="text-[15px] text-muted-foreground mt-0.5">@marketing_campaign_bot</p>
+              <p className="text-[15px] text-muted-foreground mt-0.5">@KfeSecurityBot</p>
             </div>
             
             <div className="bg-card/60 backdrop-blur-xl rounded-[24px] overflow-hidden border border-white/5 shadow-sm">
@@ -208,7 +208,7 @@ export function SettingsModal({
                 <div className="p-4 border-b border-border/50">
                   <div className="text-[13px] font-semibold text-primary mb-1">Username</div>
                   <div className="flex items-center justify-between">
-                    <span className="text-[15px] text-foreground">@marketing_campaign_bot</span>
+                    <span className="text-[15px] text-foreground">@KfeSecurityBot</span>
                     <button className="text-primary hover:opacity-80 transition-opacity p-1 rounded-md hover:bg-primary/10"><Copy className="w-[18px] h-[18px]" /></button>
                   </div>
                   <p className="text-[13px] text-muted-foreground mt-2 leading-relaxed">This is your bot's public handle. Users can interact with your bot by searching for this username on Telegram.</p>
@@ -565,7 +565,7 @@ export function SettingsModal({
                   </div>
                   <div className="flex-1">
                     <div className="text-[15px] font-medium text-foreground">Marketing Bot</div>
-                    <div className="text-[13px] text-muted-foreground">@marketing_campaign_bot</div>
+                    <div className="text-[13px] text-muted-foreground">@KfeSecurityBot</div>
                   </div>
                 </button>
                 <button className="flex w-full items-center gap-4 px-4 py-3.5 text-left hover:bg-accent/50 transition-colors border-b border-border/50">
