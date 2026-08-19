@@ -178,7 +178,7 @@ export function ChatInput({
   return (
     <div className="relative mx-auto w-full max-w-4xl px-3 pb-4 sm:px-8">
       {replyTo && (
-        <div className="absolute inset-x-3 bottom-[calc(100%-16px)] sm:inset-x-8 z-0 flex items-center gap-2 rounded-t-xl bg-card/80 px-3 pb-5 pt-2 shadow-sm backdrop-blur-xl border-t border-x border-border">
+        <div className="absolute inset-x-3 bottom-[calc(100%-16px)] sm:inset-x-8 z-0 flex items-center gap-2 rounded-t-xl bg-card/80 px-3 pb-5 pt-2 shadow-sm backdrop-blur-xl border-t border-x border-border animate-in fade-in slide-in-from-bottom-6 duration-200 ease-out">
           <div className="w-1 rounded-full bg-primary self-stretch my-0.5"></div>
           <div className="flex-1 min-w-0 pl-3 pr-2 py-0.5">
             <div className="font-semibold text-primary text-[13px] leading-tight">{replyTo.author}</div>

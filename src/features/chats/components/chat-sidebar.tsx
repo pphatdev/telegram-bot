@@ -1,6 +1,6 @@
 "use client";
 
-import { Search, Pencil, Menu, User, Archive } from "lucide-react";
+import { Search, Pencil, Menu, Settings, Shield } from "lucide-react";
 import { useState } from "react";
 
 interface ChatSidebarProps {
@@ -98,10 +98,10 @@ export function ChatSidebar({ mobileView, setMobileView }: ChatSidebarProps) {
       </nav>
       <div className="border-t border-border p-3">
         <button className="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-sm text-muted-foreground hover:bg-accent hover:text-foreground">
-          <User className="w-4 h-4" /> Contacts
+          <Settings className="w-4 h-4" /> Settings
         </button>
         <button className="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-sm text-muted-foreground hover:bg-accent hover:text-foreground">
-          <Archive className="w-4 h-4" /> Archived Chats
+          <Shield className="w-4 h-4" /> Whitelist & Blacklist
         </button>
       </div>
     </aside>
