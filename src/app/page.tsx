@@ -6,6 +6,7 @@ import { ChatHeader } from "@/features/chats/components/chat-header";
 import { ChatMessage } from "@/features/chats/components/chat-message";
 import { ChatInput } from "@/features/chats/components/chat-input";
 import { ChatProfile } from "@/features/chats/components/chat-profile";
+import { PasscodeLock } from "@/features/auth/components/passcode-lock";
 
 export default function ChatPage() {
   const [mobileView, setMobileView] = useState<'sidebar' | 'chat'>('sidebar');
@@ -16,6 +17,7 @@ export default function ChatPage() {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [replyTo, setReplyTo] = useState<{ author: string; text: string } | null>(null);
   const [activeEmojiTab, setActiveEmojiTab] = useState<'emoji' | 'sticker' | 'gif'>('emoji');
+  const [isLocked, setIsLocked] = useState(false);
   const inputRef = useRef<HTMLTextAreaElement>(null);
 
   const handleReply = (author: string, text: string) => {
@@ -25,6 +27,13 @@ export default function ChatPage() {
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
+      // Lock app with Ctrl+L or Cmd+L for demo purposes
+      if ((e.ctrlKey || e.metaKey) && e.key === 'l') {
+        e.preventDefault();
+        setIsLocked(true);
+        return;
+      }
+
       if (e.key === 'Escape') {
         if (showProfile) {
           setShowProfile(false);
@@ -42,7 +51,8 @@ export default function ChatPage() {
     if (!showProfile) return;
     const checkWidth = () => {
       // 375 (min chat width) + 350 (profile width) = 725
-      if (window.innerWidth < sidebarWidth + 725) {
+      // Only auto-hide on desktop (>=1024px) when there isn't enough room for side-by-side
+      if (window.innerWidth >= 1024 && window.innerWidth < sidebarWidth + 725) {
         setShowProfile(false);
       }
     };
@@ -53,6 +63,13 @@ export default function ChatPage() {
   
   return (
     <main className="flex h-screen bg-background p-1">
+      {isLocked && (
+        <PasscodeLock 
+          onUnlock={() => setIsLocked(false)} 
+          correctPasscode="1234" 
+        />
+      )}
+
       <ChatSidebar 
         mobileView={mobileView} 
         setMobileView={setMobileView} 
