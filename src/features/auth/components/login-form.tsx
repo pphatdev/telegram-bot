@@ -6,7 +6,7 @@ import { cn } from '@/lib/utils';
 
 export function LoginForm() {
   const [isLoading, setIsLoading] = useState(false);
-  const [token, setToken] = useState('');
+  const [token, setToken] = useState('1234567890:AAHdqTcvCH1vGWJxfSeofSAs0K5PALDsawa');
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();

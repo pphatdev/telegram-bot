@@ -27,6 +27,7 @@ export function ChatSidebar({ mobileView, setMobileView, activeChatId, setActive
   const [activeTab, setActiveTab] = useState<ChatType>('All');
   const [searchQuery, setSearchQuery] = useState('');
   const [showSettings, setShowSettings] = useState(false);
+  const [settingsView, setSettingsView] = useState<string | undefined>(undefined);
   const [theme, setTheme] = useState<'light' | 'dark' | 'system'>('dark');
   const [font, setFont] = useState<'inter' | 'geist' | 'kantumruy' | 'opensans' | 'sans-serif'>('inter');
   const [scale, setScale] = useState<number>(100);
@@ -120,15 +121,19 @@ export function ChatSidebar({ mobileView, setMobileView, activeChatId, setActive
       <div className="flex flex-col gap-4 px-4 pt-5 pb-2 border-b border-border/50 bg-background/50 backdrop-blur-xl sticky top-0 z-10">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <button onClick={() => setShowSettings(true)} aria-label="Menu" className="grid size-9 place-items-center rounded-full bg-accent hover:bg-accent/80 active:scale-95 transition-all lg:hidden">
+            <button onClick={() => { setSettingsView(undefined); setShowSettings(true); }} aria-label="Menu" className="grid size-9 place-items-center rounded-full bg-accent hover:bg-accent/80 active:scale-95 transition-all lg:hidden">
               <Menu className="w-4.5 h-4.5 text-foreground" />
             </button>
             <h1 className="text-[26px] font-bold tracking-tight text-foreground lg:block hidden">Chats</h1>
             <h1 className="text-[26px] font-bold tracking-tight text-foreground lg:hidden">Chats</h1>
           </div>
           <div className="flex items-center gap-2">
-            <button aria-label="New message" className="grid size-9 place-items-center rounded-full bg-blue-500 text-white shadow-sm hover:bg-blue-600 active:scale-95 transition-all">
-              <Pencil className="w-4.5 h-4.5 translate-x-px -translate-y-px" />
+            <button 
+              aria-label="Settings" 
+              onClick={() => { setSettingsView('profile'); setShowSettings(true); }}
+              className="size-9 rounded-full overflow-hidden shadow-sm border border-border/50 hover:ring-2 hover:ring-primary/50 active:scale-95 transition-all bg-muted"
+            >
+              <img src="https://github.com/pphatdev.png" alt="Profile avatar" className="w-full h-full object-cover" />
             </button>
           </div>
         </div>
@@ -208,10 +213,10 @@ export function ChatSidebar({ mobileView, setMobileView, activeChatId, setActive
         ))}
       </nav>
       <div className="hidden lg:block border-t border-border p-3">
-        <button onClick={() => setShowSettings(true)} className="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-sm text-muted-foreground hover:bg-accent hover:text-foreground">
+        <button onClick={() => { setSettingsView(undefined); setShowSettings(true); }} className="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-sm text-muted-foreground hover:bg-accent hover:text-foreground">
           <Settings className="w-4 h-4" /> Settings
         </button>
-        <button className="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-sm text-muted-foreground hover:bg-accent hover:text-foreground">
+        <button onClick={() => { setSettingsView('access-control'); setShowSettings(true); }} className="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-sm text-muted-foreground hover:bg-accent hover:text-foreground">
           <Shield className="w-4 h-4" /> Whitelist & Blacklist
         </button>
       </div>
@@ -252,9 +257,9 @@ export function ChatSidebar({ mobileView, setMobileView, activeChatId, setActive
       )}
 
       <SettingsModal 
-
         showSettings={showSettings}
         setShowSettings={setShowSettings}
+        initialView={settingsView}
         theme={theme}
         handleThemeChange={handleThemeChange}
         font={font}

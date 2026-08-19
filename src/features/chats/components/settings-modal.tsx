@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 interface SettingsModalProps {
   showSettings: boolean;
   setShowSettings: (show: boolean) => void;
+  initialView?: string;
   theme: 'light' | 'dark' | 'system';
   handleThemeChange: (theme: 'light' | 'dark' | 'system') => void;
   font: 'inter' | 'geist' | 'kantumruy' | 'opensans' | 'sans-serif';
@@ -15,6 +16,7 @@ interface SettingsModalProps {
 export function SettingsModal({
   showSettings,
   setShowSettings,
+  initialView,
   theme,
   handleThemeChange,
   font,
@@ -86,6 +88,13 @@ export function SettingsModal({
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [isFontDropdownOpen, viewHistory, showSettings]);
 
+  useEffect(() => {
+    if (showSettings) {
+      setViewHistory(initialView ? ['main', initialView] : ['main']);
+      setDirection('forward');
+    }
+  }, [showSettings, initialView]);
+
   if (!showSettings) return null;
 
   return (
@@ -115,9 +124,9 @@ export function SettingsModal({
             
             <div className="bg-card/60 backdrop-blur-xl rounded-[24px] overflow-hidden border border-white/5 shadow-sm">
               <button onClick={() => navigateTo('profile')} className="flex w-full items-center gap-4 px-4 py-3.5 text-left hover:bg-accent/50 transition-colors border-b border-border/50">
-                <div className="bg-blue-500 p-1.5 rounded-[10px] text-white shadow-sm"><User className="w-5 h-5" /></div>
+                <div className="bg-blue-500 p-1.5 rounded-[10px] text-white shadow-sm"><Bot className="w-5 h-5" /></div>
                 <div className="flex-1">
-                  <div className="text-[15px] font-medium text-foreground">Personal Info</div>
+                  <div className="text-[15px] font-medium text-foreground">Bot Profile</div>
                 </div>
                 <ChevronRight className="w-5 h-5 text-muted-foreground/50" />
               </button>
@@ -169,7 +178,10 @@ export function SettingsModal({
             </div>
 
             <div className="bg-card/60 backdrop-blur-xl rounded-[24px] overflow-hidden border border-white/5 shadow-sm mt-4">
-              <button className="flex w-full items-center justify-center gap-3 px-4 py-3.5 hover:bg-destructive/10 transition-colors group">
+              <button 
+                onClick={() => window.location.href = '/login'}
+                className="flex w-full items-center justify-center gap-3 px-4 py-3.5 hover:bg-destructive/10 transition-colors group"
+              >
                 <LogOut className="w-5 h-5 text-red-500 group-hover:text-red-600 transition-colors" />
                 <div className="text-[15px] font-medium text-red-500 group-hover:text-red-600 transition-colors">Log Out</div>
               </button>
