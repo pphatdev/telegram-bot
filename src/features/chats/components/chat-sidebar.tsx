@@ -1,7 +1,7 @@
 "use client";
 
 import { Search, Pencil, Menu, Settings, Shield } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { SettingsModal } from "./settings-modal";
 
 interface ChatSidebarProps {
@@ -26,9 +26,10 @@ export function ChatSidebar({ mobileView, setMobileView }: ChatSidebarProps) {
   const [font, setFont] = useState<'inter' | 'geist' | 'kantumruy' | 'opensans' | 'sans-serif'>('inter');
   const [scale, setScale] = useState<number>(100);
 
+
   const handleScaleChange = (newScale: number) => {
     setScale(newScale);
-    document.documentElement.style.fontSize = `${newScale}%`;
+    document.documentElement.style.fontSize = `${newScale * 0.85}%`;
   };
 
   const handleFontChange = (newFont: 'inter' | 'geist' | 'kantumruy' | 'opensans' | 'sans-serif') => {
@@ -71,39 +72,43 @@ export function ChatSidebar({ mobileView, setMobileView }: ChatSidebarProps) {
 
   return (
     <aside className={`w-full lg:w-82.5 flex-col overflow-hidden lg:rounded-r-none rounded-[16px]  border-white/50 bg-sidebar shadow-xl ${mobileView === 'sidebar' ? 'flex animate-in fade-in slide-in-from-left-8 lg:animate-none duration-300' : 'hidden lg:flex'}`}>
-      <div className="flex items-center gap-3 bg-primary/90 px-4 py-4 text-primary-foreground backdrop-blur-xl">
-        <button aria-label="Menu" className="rounded-full p-1 hover:bg-primary-foreground/15 lg:hidden">
-          <Menu className="w-5 h-5" />
-        </button>
-        <div className="grid size-9 place-items-center rounded-full bg-primary-foreground/20 text-lg font-semibold lg:ml-0 ml-1">
-          t
+      <div className="flex flex-col gap-4 px-4 pt-5 pb-2 border-b border-border/50 bg-background/50 backdrop-blur-xl sticky top-0 z-10">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <button onClick={() => setShowSettings(true)} aria-label="Menu" className="grid size-9 place-items-center rounded-full bg-accent hover:bg-accent/80 active:scale-95 transition-all lg:hidden">
+              <Menu className="w-[18px] h-[18px] text-foreground" />
+            </button>
+            <h1 className="text-[26px] font-bold tracking-tight text-foreground lg:block hidden">Chats</h1>
+            <h1 className="text-[26px] font-bold tracking-tight text-foreground lg:hidden">Chats</h1>
+          </div>
+          <div className="flex items-center gap-2">
+            <button aria-label="New message" className="grid size-9 place-items-center rounded-full bg-blue-500 text-white shadow-sm hover:bg-blue-600 active:scale-95 transition-all">
+              <Pencil className="w-[18px] h-[18px] translate-x-[1px] -translate-y-[1px]" />
+            </button>
+          </div>
         </div>
-        <div className="flex-1 text-lg font-semibold">Telegram</div>
-        <button aria-label="New message" className="rounded-full p-2 hover:bg-primary-foreground/15">
-          <Pencil className="w-4 h-4" />
-        </button>
-      </div>
-      <div className="bg-primary px-4 py-3">
-        <label className="flex items-center gap-2 rounded-lg bg-primary-foreground/15 px-3 py-2 text-sm text-primary-foreground/70">
-          <Search className="w-4 h-4" />
+
+        <label className="flex items-center gap-2 rounded-[12px] bg-accent/60 px-3 py-2 text-sm text-muted-foreground focus-within:bg-accent focus-within:ring-2 focus-within:ring-primary/20 transition-all border border-transparent focus-within:border-border/50">
+          <Search className="w-4 h-4 text-muted-foreground/70" />
           <input
-            className="w-full bg-transparent outline-none placeholder:text-primary-foreground/70"
+            className="w-full bg-transparent outline-none placeholder:text-muted-foreground/70 text-foreground font-medium"
             placeholder="Search"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
           />
         </label>
-        <div role="tablist" aria-label="Conversation types" className="mt-3 flex gap-1 rounded-xl bg-primary-foreground/10 p-1">
+
+        <div role="tablist" aria-label="Conversation types" className="flex gap-2 overflow-x-auto no-scrollbar pb-1">
           {(['All', 'Personal', 'Group', 'Channel'] as ChatType[]).map((tab) => (
             <button
               key={tab}
               role="tab"
               aria-selected={activeTab === tab}
               onClick={() => setActiveTab(tab)}
-              className={`flex-1 rounded-lg px-2 py-1.5 text-xs font-medium transition ${
+              className={`whitespace-nowrap rounded-full px-4 py-1.5 text-[13px] font-medium transition-all active:scale-[0.97] ${
                 activeTab === tab
-                  ? 'bg-primary-foreground text-primary shadow-sm'
-                  : 'text-primary-foreground/75 hover:bg-primary-foreground/10'
+                  ? 'bg-blue-500 text-white shadow-sm'
+                  : 'bg-accent/50 text-muted-foreground hover:bg-accent hover:text-foreground border border-border/50'
               }`}
             >
               {tab}
@@ -136,7 +141,7 @@ export function ChatSidebar({ mobileView, setMobileView }: ChatSidebarProps) {
           </button>
         ))}
       </nav>
-      <div className="border-t border-border p-3">
+      <div className="hidden lg:block border-t border-border p-3">
         <button onClick={() => setShowSettings(true)} className="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-sm text-muted-foreground hover:bg-accent hover:text-foreground">
           <Settings className="w-4 h-4" /> Settings
         </button>
