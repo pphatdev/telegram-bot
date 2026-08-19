@@ -1,4 +1,4 @@
-import { Shield, X, User, Bell, Palette, ArrowLeft, Sun, Moon, Monitor, Check, Type, ChevronDown, ChevronRight, Bot, Lock, LogOut, Plus, Smartphone, KeyRound, ShieldCheck, Camera, Copy } from "lucide-react";
+import { Shield, X, User, Bell, Palette, ArrowLeft, Sun, Moon, Monitor, Check, Type, ChevronDown, ChevronRight, Bot, Lock, LogOut, Plus, Smartphone, KeyRound, ShieldCheck, Camera, Copy, Users, Trash2 } from "lucide-react";
 import { useState, useEffect } from "react";
 
 interface SettingsModalProps {
@@ -44,6 +44,30 @@ export function SettingsModal({
   const [messagePreview, setMessagePreview] = useState(true);
   const [soundEnabled, setSoundEnabled] = useState(true);
   const [desktopNotifications, setDesktopNotifications] = useState(true);
+  
+  const [accessListTab, setAccessListTab] = useState<'whitelist' | 'blacklist' | 'keywords' | 'stickers'>('whitelist');
+  const [whitelist, setWhitelist] = useState(['@vip_user_1', '@ceo_boss', '1002348593']);
+  const [blacklist, setBlacklist] = useState(['@spammer_bot', '9483726152']);
+  const [bannedKeywords, setBannedKeywords] = useState(['crypto', 'free money', 'scam']);
+  const [bannedStickers, setBannedStickers] = useState(['CAACAgIAAxkBAAE...']);
+  const [newUserInput, setNewUserInput] = useState('');
+
+  const handleAddUser = () => {
+    if (!newUserInput.trim()) return;
+    const value = newUserInput.trim();
+    if (accessListTab === 'whitelist') setWhitelist([...whitelist, value]);
+    else if (accessListTab === 'blacklist') setBlacklist([...blacklist, value]);
+    else if (accessListTab === 'keywords') setBannedKeywords([...bannedKeywords, value]);
+    else if (accessListTab === 'stickers') setBannedStickers([...bannedStickers, value]);
+    setNewUserInput('');
+  };
+
+  const handleRemoveUser = (item: string) => {
+    if (accessListTab === 'whitelist') setWhitelist(whitelist.filter(u => u !== item));
+    else if (accessListTab === 'blacklist') setBlacklist(blacklist.filter(u => u !== item));
+    else if (accessListTab === 'keywords') setBannedKeywords(bannedKeywords.filter(u => u !== item));
+    else if (accessListTab === 'stickers') setBannedStickers(bannedStickers.filter(u => u !== item));
+  };
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -115,6 +139,13 @@ export function SettingsModal({
                 <div className="bg-red-500 p-1.5 rounded-[10px] text-white shadow-sm"><Bell className="w-5 h-5" /></div>
                 <div className="flex-1">
                   <div className="text-[15px] font-medium text-foreground">Notifications</div>
+                </div>
+                <ChevronRight className="w-5 h-5 text-muted-foreground/50" />
+              </button>
+              <button onClick={() => navigateTo('access-control')} className="flex w-full items-center gap-4 px-4 py-3.5 text-left hover:bg-accent/50 transition-colors border-b border-border/50">
+                <div className="bg-sky-500 p-1.5 rounded-[10px] text-white shadow-sm"><Users className="w-5 h-5" /></div>
+                <div className="flex-1">
+                  <div className="text-[15px] font-medium text-foreground">Access Control</div>
                 </div>
                 <ChevronRight className="w-5 h-5 text-muted-foreground/50" />
               </button>
@@ -233,6 +264,103 @@ export function SettingsModal({
               
               <div className="text-[13px] text-muted-foreground px-2 leading-relaxed">
                 Choose how you want to be notified about new messages and events from this bot.
+              </div>
+            </div>
+          </>
+        ) : activeSettingsView === 'access-control' ? (
+          <>
+            <div className="relative flex items-center justify-center mb-6 h-8">
+              <button onClick={goBack} className="absolute left-0 flex items-center gap-1 text-primary hover:opacity-80 transition-opacity">
+                <ArrowLeft className="w-6 h-6 -ml-1" />
+                <span className="text-[15px]">Settings</span>
+              </button>
+              <h2 className="text-[15px] font-semibold tracking-tight">Access Control</h2>
+            </div>
+            
+            <div className="space-y-6">
+              <div className="bg-card/60 backdrop-blur-xl rounded-[24px] overflow-hidden border border-white/5 shadow-sm p-1.5 flex gap-1 overflow-x-auto no-scrollbar">
+                <button 
+                  onClick={() => setAccessListTab('whitelist')}
+                  className={`flex-none rounded-[18px] px-4 py-2 text-[14px] font-medium transition-all ${accessListTab === 'whitelist' ? 'bg-primary text-primary-foreground shadow-sm' : 'text-muted-foreground hover:bg-accent/50'}`}
+                >
+                  Whitelist
+                </button>
+                <button 
+                  onClick={() => setAccessListTab('blacklist')}
+                  className={`flex-none rounded-[18px] px-4 py-2 text-[14px] font-medium transition-all ${accessListTab === 'blacklist' ? 'bg-destructive text-destructive-foreground shadow-sm' : 'text-muted-foreground hover:bg-accent/50'}`}
+                >
+                  Blacklist
+                </button>
+                <button 
+                  onClick={() => setAccessListTab('keywords')}
+                  className={`flex-none rounded-[18px] px-4 py-2 text-[14px] font-medium transition-all ${accessListTab === 'keywords' ? 'bg-orange-500 text-white shadow-sm' : 'text-muted-foreground hover:bg-accent/50'}`}
+                >
+                  Keywords
+                </button>
+                <button 
+                  onClick={() => setAccessListTab('stickers')}
+                  className={`flex-none rounded-[18px] px-4 py-2 text-[14px] font-medium transition-all ${accessListTab === 'stickers' ? 'bg-purple-500 text-white shadow-sm' : 'text-muted-foreground hover:bg-accent/50'}`}
+                >
+                  Stickers
+                </button>
+              </div>
+
+              <div className="bg-card/60 backdrop-blur-xl rounded-[24px] overflow-hidden border border-white/5 shadow-sm p-2 flex gap-2">
+                <input 
+                  type="text"
+                  placeholder={accessListTab === 'whitelist' || accessListTab === 'blacklist' ? "Enter User ID or @username" : accessListTab === 'keywords' ? "Enter word, phrase, or /regex/ to ban" : "Enter sticker ID to ban"}
+                  value={newUserInput}
+                  onChange={(e) => setNewUserInput(e.target.value)}
+                  onKeyDown={(e) => e.key === 'Enter' && handleAddUser()}
+                  className="flex-1 bg-transparent px-3 py-2 text-[15px] text-foreground outline-none placeholder:text-muted-foreground/50"
+                />
+                <button 
+                  onClick={handleAddUser}
+                  disabled={!newUserInput.trim()}
+                  className="bg-primary text-primary-foreground px-4 rounded-xl font-medium text-[14px] hover:opacity-90 transition-opacity disabled:opacity-50"
+                >
+                  Add
+                </button>
+              </div>
+
+              <div className="bg-card/60 backdrop-blur-xl rounded-[24px] overflow-hidden border border-white/5 shadow-sm">
+                {(() => {
+                  const currentList = accessListTab === 'whitelist' ? whitelist : accessListTab === 'blacklist' ? blacklist : accessListTab === 'keywords' ? bannedKeywords : bannedStickers;
+                  return currentList.length === 0 ? (
+                    <div className="p-8 text-center text-muted-foreground text-[14px]">
+                      This list is currently empty.
+                    </div>
+                  ) : (
+                    currentList.map((item, idx, arr) => (
+                      <div key={item} className={`flex items-center justify-between p-4 ${idx !== arr.length - 1 ? 'border-b border-border/50' : ''}`}>
+                        <div className="flex items-center gap-3">
+                          <div className={`grid size-10 place-items-center rounded-full text-white shadow-sm font-medium ${accessListTab === 'whitelist' ? 'bg-green-500' : accessListTab === 'blacklist' ? 'bg-red-500' : accessListTab === 'keywords' ? 'bg-orange-500' : 'bg-purple-500'}`}>
+                            {item.startsWith('@') ? item.charAt(1).toUpperCase() : item.charAt(0).toUpperCase()}
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <div className="text-[15px] font-medium text-foreground truncate max-w-[200px]">{item}</div>
+                            {accessListTab === 'keywords' && item.startsWith('/') && (
+                              <span className="bg-orange-500/10 text-orange-500 border border-orange-500/20 text-[10px] font-bold px-2 py-0.5 rounded-[6px]">REGEX</span>
+                            )}
+                          </div>
+                        </div>
+                        <button onClick={() => handleRemoveUser(item)} className="text-muted-foreground hover:text-destructive transition-colors p-2 hover:bg-destructive/10 rounded-full">
+                          <Trash2 className="w-[18px] h-[18px]" />
+                        </button>
+                      </div>
+                    ))
+                  );
+                })()}
+              </div>
+              
+              <div className="text-[13px] text-muted-foreground px-2 leading-relaxed">
+                {accessListTab === 'whitelist' 
+                  ? "Users in the whitelist bypass spam filters and broadcast rate limits." 
+                  : accessListTab === 'blacklist' 
+                  ? "Users in the blacklist are blocked from receiving broadcasts and interacting with the bot."
+                  : accessListTab === 'keywords'
+                  ? "Messages containing these keywords will be automatically deleted or flagged."
+                  : "Stickers matching these IDs will be automatically removed from chats."}
               </div>
             </div>
           </>
