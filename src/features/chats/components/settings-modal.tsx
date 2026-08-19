@@ -61,7 +61,7 @@ export function SettingsModal({
 
   return (
     <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/50 backdrop-blur-md animate-in fade-in duration-200" onClick={() => { setShowSettings(false); setViewHistory(['main']); setDirection('forward'); }}>
-      <div className="w-[90%] max-w-sm sm:max-w-md rounded-[32px] bg-background/85 backdrop-blur-3xl p-6 shadow-2xl border border-white/10 animate-in zoom-in-95 duration-300" onClick={(e) => { e.stopPropagation(); setIsFontDropdownOpen(false); }}>
+      <div className="w-full h-full sm:w-[90%] max-w-none sm:max-w-md sm:h-auto rounded-none sm:rounded-[32px] bg-background/95 sm:bg-background/85 backdrop-blur-3xl p-6 sm:shadow-2xl border-0 sm:border border-white/10 animate-in slide-in-from-right-8 sm:slide-in-from-right-0 sm:zoom-in-95 duration-300 overflow-y-auto" onClick={(e) => { e.stopPropagation(); setIsFontDropdownOpen(false); }}>
         <div key={activeSettingsView} className={`w-full ${direction === 'forward' && activeSettingsView !== 'main' ? 'animate-in fade-in slide-in-from-right-8 duration-300' : ''} ${direction === 'backward' ? 'animate-in fade-in slide-in-from-left-8 duration-300' : ''}`}>
         {activeSettingsView === 'main' ? (
           <>
