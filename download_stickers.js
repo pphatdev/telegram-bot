@@ -2,8 +2,13 @@ const fs = require('fs');
 const path = require('path');
 const https = require('https');
 
-const TOKEN = "***REDACTED***";
+const TOKEN = process.env.TELEGRAM_BOT_TOKEN;
 const PACK_NAME = "pphat";
+
+if (!TOKEN) {
+  console.error("Set TELEGRAM_BOT_TOKEN before running this script.");
+  process.exit(1);
+}
 
 async function fetchJson(url) {
   return new Promise((resolve, reject) => {
